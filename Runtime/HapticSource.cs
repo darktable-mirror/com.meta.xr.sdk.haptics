@@ -1,6 +1,7 @@
 // (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
 
 using System;
+using Meta.XR.Util;
 using UnityEngine;
 
 namespace Oculus.Haptics
@@ -21,6 +22,7 @@ namespace Oculus.Haptics
     /// You can place multiple <c>HapticSource</c> components in your scene, with a different
     /// <c>HapticClip</c> assigned to each.
     /// </remarks>
+    [Feature(Feature.Haptics)]
     public class HapticSource : MonoBehaviour, ISerializationCallbackReceiver
     {
         // The <c>HapticClipPlayer</c> that <c>HapticSource</c> wraps.
