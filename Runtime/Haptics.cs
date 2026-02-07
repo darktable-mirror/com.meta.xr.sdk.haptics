@@ -55,11 +55,21 @@ namespace Oculus.Haptics
         /// <summary>
         /// Whether PCM haptics are available and enabled for the current runtime.
         /// </summary>
+        ///
+        /// <remarks>
+        /// PCM haptics allow for high-quality haptic feedback. This property indicates whether PCM haptics
+        /// are supported by the current runtime and whether they are enabled.
+        /// </remarks>
         public static bool IsPCMHaptics { get; private set; } = false;
 
         /// <summary>
         /// Returns the singleton instance of <c>Haptics</c>: either existing or new.
         /// </summary>
+        ///
+        /// <remarks>
+        /// The <c>Haptics</c> class provides access to haptic feedback functionality. This property returns
+        /// the singleton instance of <c>Haptics</c>,creating a new instance if one does not already exist.
+        /// </remarks>
         public static Haptics Instance
         {
             get
@@ -83,6 +93,12 @@ namespace Oculus.Haptics
             }
         }
 
+        /// <summary>
+        /// Determines whether the current platform is supported by the Haptics SDK, returning true for standalone Quest builds,
+        /// Link to Quest on Windows, and other PCVR devices on Windows.
+        /// </summary>
+        ///
+        ///<returns><c>true</c> if the current platform is supported, <c>false</c> otherwise</returns>
         private static bool IsSupportedPlatform()
         {
             // Standalone Quest builds, Link to Quest and other PCVR devices on Windows.
@@ -93,6 +109,13 @@ namespace Oculus.Haptics
 #endif
         }
 
+        /// <summary>
+        /// Checks if the PCM haptics extension is enabled on the current platform.
+        /// This method is specific to OpenXR on Windows and returns true if the XR_FB_haptic_pcm extension is enabled.
+        /// On other platforms, it always returns true.
+        /// </summary>
+        ///
+        ///<returns><c>true</c> if the PCM haptics extension is enabled, <c>false</c> otherwise</returns>
         private static bool IsPcmHapticsExtensionEnabled()
         {
 #if (UNITY_STANDALONE_WIN && USING_XR_SDK_OPENXR)
@@ -110,17 +133,18 @@ namespace Oculus.Haptics
         }
 
         /// <summary>
-        /// A function that plays the given haptic sample through Unity's SendHapticImpulse() API.
+        /// Plays a haptic sample through Unity's SendHapticImpulse() API.
+        /// This function is called internally as a play callback on non-Quest devices that do not support the PCM API.
         /// </summary>
         ///
         /// <remarks>
-        /// This is used as the play callback for the Native SDK on non Quest devices.
+        /// This method is specific to OpenXR on Windows and uses the <c>SendHapticImpulse()</c> API to play haptics on the specified controller.
         /// </remarks>
         ///
-        /// <param name="context">Context pointer </param>
-        /// <param name="controller">Controller where the haptics should play </param>
-        /// <param name="duration">Duration of the vibration </param>
-        /// <param name="amplitude">Amplitude of the vibration </param>
+        /// <param name="context">Context pointer</param>
+        /// <param name="controller">Controller where the haptics should play</param>
+        /// <param name="duration">Duration of the vibration</param>
+        /// <param name="amplitude">Amplitude of the vibration</param>
         [AOT.MonoPInvokeCallback(typeof(Ffi.HapticsSdkPlayCallback))]
         private static void PlayCallback(IntPtr context, Ffi.Controller controller, float duration, float amplitude)
         {
@@ -141,8 +165,10 @@ namespace Oculus.Haptics
         }
 
         /// <summary>
-        /// The constructor is protected to ensure that a class instance cannot be created
-        /// directly and all consuming code must go through the <c>Instance</c> property.
+        /// The constructor is protected to ensure that a class instance cannot be created directly and all consuming
+        /// code must go through the <c>Instance</c> property.
+        /// This design pattern ensures a singleton-like behavior, where only one instance of the Haptics class exists
+        /// throughout the application.
         /// </summary>
         protected Haptics()
         {
@@ -150,6 +176,7 @@ namespace Oculus.Haptics
 
         /// <summary>
         /// Ensures that the haptics runtime is initialized for supported configurations.
+        /// This method checks if the haptics runtime is already initialized, and if not, attempts to initialize it using the OVRPlugin backend or the callback backend.
         /// </summary>
         ///
         /// <returns><c>true</c> if it was possible to ensure initialization; <c>false</c> otherwise.</returns>
@@ -160,7 +187,7 @@ namespace Oculus.Haptics
                 return true;
             }
 
-            if (IsPcmHapticsExtensionEnabled() && Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "69.0.0-mainline.0")))
+            if (IsPcmHapticsExtensionEnabled() && Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "71.0.0-mainline.0")))
             {
                 Debug.Log("Initialized with OVRPlugin backend");
                 IsPCMHaptics = true;
@@ -179,6 +206,12 @@ namespace Oculus.Haptics
             return false;
         }
 
+        /// <summary>
+        /// Checks if the haptics runtime is already initialized.
+        /// This method queries the initialization state of the haptics runtime and returns true if it is initialized, false otherwise.
+        /// </summary>
+        ///
+        ///<returns><c>true</c> if the haptics runtime is initialized, <c>false</c> otherwise</returns>
         private static bool IsInitialized()
         {
             if (Ffi.Failed(Ffi.initialized(out var isInitialized)))
@@ -546,14 +579,16 @@ namespace Oculus.Haptics
 
         /// <summary>
         /// Call this to explicitly release the haptics runtime.
+        /// This method has the haptics runtime released while ensuring that the garbage collector doesn't kick in.,
+        /// which will also result in any loaded <c>HapticClipPlayer</c>s and <c>HapticClip</c>s being released from memory.
         /// </summary>
         ///
         /// <remarks>
-        /// This will also result in any <c>HapticClipPlayer</c>s and <c>HapticClip</c>s loaded into
-        /// the runtime getting released from memory. In general you shouldn't need to explicitly release
-        /// the haptics runtime as it is intended to run for the duration of your application and to get
-        /// released via <c>~Haptics</c> on shutdown. However if you do have a particular reason to release
-        /// it explicitly, creating a new <c>HapticClipPlayer</c> will produce a new one.
+        /// In general, you shouldn't need to explicitly release the haptics runtime as it is intended to run for the
+        /// duration of your application and gets released via <c>~Haptics</c> on shutdown.
+        /// However, if you have a particular reason to release it explicitly, call <c>Dispose()</c> to do
+        /// so. If you need to use the haptics runtime again after having released it simply create a new
+        /// <c>HapticClipPlayer</c> and a new runtime will be instantiated implicitly.
         /// </remarks>
         public void Dispose()
         {
@@ -561,6 +596,7 @@ namespace Oculus.Haptics
             GC.SuppressFinalize(this);
         }
 
+        ///<summary>Releases the haptics runtime and its associated resources.</summary>
         protected virtual void Dispose(bool disposing)
         {
             if (instance is not null)

@@ -30,61 +30,83 @@ namespace Oculus.Haptics
     /// </summary>
     ///
     /// <remarks>
-    /// It only plays valid <c>HapticClip</c>s. A <c>HapticClip</c> assigned to a
-    /// <c>HapticClipPlayer</c> can be played and stopped as often as required.
+    /// A <c>HapticClipPlayer</c> only plays valid <c>HapticClip</c>s. You can start and
+    /// stop a <c>HapticClip</c> assigned to a <c>HapticClipPlayer</c> as often as required.
+    /// The rendered amplitude and frequency can be modulated during runtime using the <see cref="HapticClipPlayer.amplitude"/>
+    /// and <see cref="HapticClipPlayer.frequencyShift"/> properties respectively.
+    /// You can also loop a clip using the <see cref="HapticClipPlayer.isLooping"/> property.
+    /// It is possible to release <c>HapticClipPlayer</c> objects as needed to free up memory using the <c>Dispose()</c> method.
+    /// Of course, calling any method on a released <c>HapticClipPlayer</c> will cause a runtime error.
     /// </remarks>
     public class HapticClipPlayer : IDisposable
     {
-        /// <summary>
-        /// The internal ID of the <c>HapticClip</c> associated with the <c>HapticClipPlayer</c>.
-        /// </summary>
+        /// The internal ID of the <c>HapticClip</c> associated with the <c>HapticClipPlayer</c>. This ID is used internally to identify the
+        /// clip.
+        ///
+        /// The <c>_clipID</c> is set when creating a new <c>HapticClipPlayer</c> instance with a <c>HapticClip</c>, typically through
+        /// the <see cref="HapticClipPlayer(HapticClip)"/> constructor and when assigning the clip via the <c>clip</c> property
         private int _clipId = Ffi.InvalidId;
 
-        /// <summary>
-        /// The internal ID of the <c>HapticClipPlayer</c>. As long as the player has an ID it is
-        /// in a valid state. It loses its ID if explicitly disposed.
-        /// </summary>
+        /// The internal ID of the <c>HapticClipPlayer</c>. As long as the player has an ID, it is considered to be in a valid state and can play.
+        /// If the player is explicitly disposed, its ID is invalidated.
         private int _playerId = Ffi.InvalidId;
 
         /// <summary>
-        /// The implementation of <c>Haptics</c> for <c>HapticClipPlayer</c> to use.
+        /// The implementation of <c>Haptics</c> for <c>HapticClipPlayer</c> to use. This field is protected to allow derived
+        /// classes to provide a custom implementation.
+        /// The <c>HapticClipPlayer</c> uses this instance to play haptic clips and access haptic-related functionality.
         /// </summary>
         protected Haptics _haptics;
 
         /// <summary>
-        /// Creates a <c>HapticClipPlayer</c> object for a given <c>HapticClip</c>.
+        /// Creates a <c>HapticClipPlayer</c> with no <c>HapticClip</c> assigned to it.
         /// </summary>
         ///
-        /// <param name="clip">The <c>HapticClip</c> to be played by this <c>HapticClipPlayer</c>.
-        /// Providing invalid clip data will cause an exception.</param>
-        public HapticClipPlayer(HapticClip clip)
+        /// <remarks>
+        /// You must assign a <c>HapticClip</c> before you can play this <c>HapticClipPlayer</c>.
+        /// You can either call the overloaded version of this constructor that accepts
+        /// a <c>HapticClip</c> or assign it with <see cref="clip"/>.
+        /// </remarks>
+        public HapticClipPlayer()
         {
             SetHaptics();
 
-            // Load clip from JSON data and check if that succeeded.
-            int clipReturnValue = _haptics.LoadClip(clip.json);
-
-            if (Ffi.InvalidId != clipReturnValue)
-            {
-                _clipId = clipReturnValue;
-            }
-
-            // Create player check if that succeeded.
+            // Create player and check if that succeeded.
             int playerReturnValue = _haptics.CreateHapticPlayer();
 
             if (Ffi.InvalidId != playerReturnValue)
             {
                 _playerId = playerReturnValue;
             }
+        }
 
-            // Assign loaded haptic clip to player
-            _haptics.SetHapticPlayerClip(_playerId, _clipId);
+        /// <summary>
+        /// Creates a <c>HapticClipPlayer</c> and assigns the given <c>HapticClip</c> to it. You can use
+        /// this player to play, stop, and generally control the haptic clip's playback properties.
+        /// </summary>
+        ///
+        /// <param name="clip">The <c>HapticClip</c> to be played by this <c>HapticClipPlayer</c>.
+        /// Providing invalid clip data (e.g., null or empty) will throw an <c>ArgumentNullException</c>.
+        /// </param>
+        public HapticClipPlayer(HapticClip clip)
+        {
+            SetHaptics();
+
+            // Create player and check if that succeeded.
+            int playerReturnValue = _haptics.CreateHapticPlayer();
+
+            if (Ffi.InvalidId != playerReturnValue)
+            {
+                _playerId = playerReturnValue;
+
+                this.clip = clip;
+            }
         }
 
         /// <summary>
         /// Sets the <c>Haptics</c> implementation that <c>HapticClipPlayer</c> will call
-        /// into for all haptics operations. This function is protected to allow derived
-        /// classes to provide a custom implementation.
+        /// into for all haptics operations.
+        /// See also: <see cref="Haptics.Instance"/> for more information on <c>Haptics</c>.
         /// </summary>
         protected virtual void SetHaptics()
         {
@@ -92,10 +114,11 @@ namespace Oculus.Haptics
         }
 
         /// <summary>
-        /// Starts playback on the specified controller.
+        /// Starts playing the assigned haptic clip on the specified controller.
         /// </summary>
         ///
-        /// <param name="controller">The controller to play back on.</param>
+        /// <param name="controller">The controller(s) to play back on. See <see cref="Haptics.Controller"/>
+        /// </param>
         public void Play(Controller controller)
         {
             _haptics.PlayHapticPlayer(_playerId, controller);
@@ -103,6 +126,8 @@ namespace Oculus.Haptics
 
         /// <summary>
         /// Stops playback of the HapticClipPlayer.
+        /// If a haptic clip is currently playing, it will be stopped immediately.
+        /// You can call this method at any time to stop playback, regardless of whether a clip is currently playing or not.
         /// </summary>
         ///
         public void Stop()
@@ -111,10 +136,11 @@ namespace Oculus.Haptics
         }
 
         /// <summary>
-        /// Whether the <c>HapticClipPlayer</c> is looping or not.
+        /// Whether looping is enabled or not. When set to <c>true</c>, the haptic clip will loop continuously
+        /// until stopped.
         /// </summary>
         ///
-        /// <value><c>true</c> if <c>HapticClipPlayer</c> is looping.</value>
+        /// <value><c>true</c> if looping is enabled.</value>
         public bool isLooping
         {
             get => _haptics.IsHapticPlayerLooping(_playerId);
@@ -122,10 +148,13 @@ namespace Oculus.Haptics
         }
 
         /// <summary>
-        /// Get the duration of the loaded haptic clip of this <c>HapticClipPlayer</c>'s instance.
+        /// Gets the duration of the loaded haptic clip of this <c>HapticClipPlayer</c>'s instance.
         /// </summary>
         ///
-        /// <value>The duration in seconds of the haptic clip.</value>
+        /// <value>The duration of the haptic clip in seconds.</value>
+        /// <remarks>
+        /// This property returns the length of the haptic clip in seconds. If no haptic clip is loaded, this property will return 0.
+        /// </remarks>
         public float clipDuration => _haptics.GetClipDuration(_clipId);
 
         /// <summary>
@@ -135,7 +164,7 @@ namespace Oculus.Haptics
         /// This changes how strong the vibration is. Amplitude values in a clip range from 0.0 to 1.0,
         /// and the result after applying the amplitude scale will be clipped to that range.
         ///
-        /// An `amplitude` of 0.0 means that no vibration will be triggered, and an `amplitude` of 0.5 will
+        /// An amplitude of 0.0 means that no vibration will be triggered, and an amplitude of 0.5 will
         /// result in the clip being played back at half of its amplitude.
         ///
         /// Example: if you apply amplitude of 5.0 to a haptic clip and the following amplitudes are in the
@@ -146,8 +175,8 @@ namespace Oculus.Haptics
         /// immediately, with a small delay in the tens of milliseconds.
         /// </summary>
         ///
-        /// <value>A value between zero and one (maximum) for the amplitude of the clip player.
-        /// Values greater than one will be clipped. Negative values will cause an exception.</value>
+        /// <value>A value of zero or greater. Negative values will
+        /// cause an exception.</value>
         public float amplitude
         {
             get => _haptics.GetAmplitudeHapticPlayer(_playerId);
@@ -203,7 +232,7 @@ namespace Oculus.Haptics
         /// The player's priority can be changed before and during playback.
         /// </summary>
         ///
-        /// <value>An integer value on the range 0 to 255 (inclusive).
+        /// <value>An integer value within the range 0 to 255 (inclusive).
         /// Values outside this range will cause an exception.</value>
         public uint priority
         {
@@ -230,7 +259,13 @@ namespace Oculus.Haptics
                 if (Ffi.InvalidId != returnValue)
                 {
                     _haptics.SetHapticPlayerClip(_playerId, returnValue);
-                    _haptics.ReleaseClip(_clipId);
+
+                    // Remove previously assigned haptic clip.
+                    if (_clipId != Ffi.InvalidId)
+                    {
+                        _haptics.ReleaseClip(_clipId);
+                    }
+
                     _clipId = returnValue;
                 }
             }

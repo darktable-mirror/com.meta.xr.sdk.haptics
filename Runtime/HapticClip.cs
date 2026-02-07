@@ -28,15 +28,21 @@ namespace Oculus.Haptics
     /// Represents an imported haptic clip asset.
     /// </summary>
     ///
-    /// <c>HapticClip</c> contains the data of a haptic clip asset imported from a <c>.haptic</c> file,
-    /// in a format suitable for playing it back at runtime.
-    /// A <c>HapticClip</c> is created by <c>HapticImporter</c> when importing a haptic clip asset
+    /// <remarks>
+    /// A <c>HapticClip</c> is an asset containing the data of a <c>.haptic</c> file. It can be played back at
+    /// runtime by a <c>HapticClipPlayer</c>. A <c>HapticClip</c> is created by <c>HapticClipImporter</c> on import.
     /// in the Unity editor.
+    /// </remarks>
     public class HapticClip : ScriptableObject
     {
         /// <summary>
-        /// The JSON representation of the haptic clip, stored as string encoded in UTF-8.
+        /// The JSON representation of the haptic clip, stored as a string encoded in UTF-8.
         /// </summary>
+        ///
+        /// <remarks>
+        /// This JSON data is imported from a <c>.haptic</c> file by the <c>HapticClipImporter</c>.
+        /// The data contains the <c>HapticClip</c>'s metadata and haptic design pattern created in Meta Haptics Studio.
+        /// </remarks>
         [SerializeField]
         public string json;
     }

@@ -30,14 +30,21 @@ using UnityEditor.AssetImporters;
 namespace Oculus.Haptics.Editor
 {
     /// <summary>
-    /// Importer for <c>HapticClip</c>.
+    /// Importer for a <c>HapticClip</c>.
     /// </summary>
+    ///
+    /// <remarks>
+    /// A <c>HapticClip</c> contains haptic playback data, designed in <see cref="https://developer.oculus.com/resources/haptics-overview/">Meta Haptics Studio</see>.
+    /// Haptic playback data is UTF-8 encoded and JSON formatted and is described by amplitude and frequency
+    /// curves in addition to emphasis points.
+    /// </remarks>
     [ScriptedImporter(version: 3, ext: "haptic", AllowCaching = true)]
     public class HapticClipImporter : ScriptedImporter
     {
         /// <summary>
         /// Loads JSON data from a <c>.haptic</c> file into a <c>HapticClip</c> and imports
-        /// the <c>HapticClip</c> into the <c>AssetDatabase</c>.
+        /// the <c>HapticClip</c> into the <c>AssetDatabase</c> so that it can be assigned to a
+        /// <c>HapticClipPlayer</c> for playback.
         /// </summary>
         public override void OnImportAsset(AssetImportContext ctx)
         {

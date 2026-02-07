@@ -13,120 +13,140 @@ public class HapticsSdkPlaySample : MonoBehaviour
     // The haptic clips are assignable in the Unity editor.
     // For this example, we are using the two demo clips found in Assets/Haptics.
     // Haptic clips can be designed in Haptics Studio (https://developer.oculus.com/experimental/exp-haptics-studio)
-    public HapticClip clip1;
-    public HapticClip clip2;
-    HapticClipPlayer _playerLeft1;
-    HapticClipPlayer _playerLeft2;
-    HapticClipPlayer _playerRight1;
-    HapticClipPlayer _playerRight2;
+    [SerializeField] private HapticClip clip1;
+    [SerializeField] private HapticClip clip2;
+    private HapticClipPlayer leftClipPlayer1;
+    private HapticClipPlayer leftClipPlayer2;
+    private HapticClipPlayer rightClipPlayer1;
+    private HapticClipPlayer rightClipPlayer2;
 
     protected virtual void Start()
     {
         // We create two haptic clip players for each hand.
-        _playerLeft1 = new HapticClipPlayer(clip1);
-        _playerLeft2 = new HapticClipPlayer(clip2);
-        _playerRight1 = new HapticClipPlayer(clip1);
-        _playerRight2 = new HapticClipPlayer(clip2);
+        leftClipPlayer1 = new HapticClipPlayer(clip1);
+        leftClipPlayer2 = new HapticClipPlayer(clip2);
+        rightClipPlayer1 = new HapticClipPlayer(clip1);
+        rightClipPlayer2 = new HapticClipPlayer(clip2);
 
         // We increase the priority for the second player on both hands.
-        _playerLeft2.priority = 1;
-        _playerRight2.priority = 1;
+        leftClipPlayer2.priority = 1;
+        rightClipPlayer2.priority = 1;
     }
 
-    // This helper function allows us to identify the controller we are currently playing back on.
-    // We use this further down for logging purposes.
-    String GetControllerName(OVRInput.Controller controller)
+    public void PlayFirstClip(Controller hand)
     {
-        if (controller == OVRInput.Controller.LTouch)
+        switch (hand)
         {
-            return "left controller";
+            case Controller.Right:
+                rightClipPlayer1.Play(Controller.Right);
+                break;
+            case Controller.Left:
+                leftClipPlayer1.Play(Controller.Left);
+                break;
+            default:
+                Debug.LogWarning("Input hand not mapped for: " + hand);
+                break;
         }
-        else if (controller == OVRInput.Controller.RTouch)
+        Debug.Log("Should feel vibration from clipPlayer1 on " + hand + " controller.");
+    }
+    public void StopFirstClip(Controller hand)
+    {
+        switch (hand)
         {
-            return "right controller";
+            case Controller.Right:
+                rightClipPlayer1.Stop();
+                break;
+            case Controller.Left:
+                leftClipPlayer1.Stop();
+                break;
+            default:
+                Debug.LogWarning("Input hand not mapped for: " + hand);
+                break;
         }
-
-        return "unknown controller";
+        Debug.Log("Vibration from clipPlayer1 should stop on hand " + hand + ".");
     }
 
-    // This section provides a series of interactions that showcase the playback and modulation capabilities of the
-    // Haptics SDK.
-    void HandleControllerInput(OVRInput.Controller controller, HapticClipPlayer clipPlayer1, HapticClipPlayer clipPlayer2, Controller hand)
+    public void SetLoopingOfFirstClip(Controller hand)
     {
-        string controllerName = GetControllerName(controller);
-
-        try
+        switch (hand)
         {
-            // Play first clip with default priority using the index trigger
-            if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, controller))
-            {
-                clipPlayer1.Play(hand);
-                Debug.Log("Should feel vibration from clipPlayer1 on " + controllerName + ".");
-            }
-
-            // Play second clip with higher priority using the grab button
-            if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger, controller))
-            {
-                clipPlayer2.Play(hand);
-                Debug.Log("Should feel vibration from clipPlayer2 on " + controllerName + ".");
-            }
-
-            // Stop first clip when releasing the index trigger
-            if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger, controller))
-            {
-                clipPlayer1.Stop();
-                Debug.Log("Vibration from clipPlayer1 on " + controllerName + " should stop.");
-            }
-
-            // Stop second clip when releasing the grab button
-            if (OVRInput.GetUp(OVRInput.Button.PrimaryHandTrigger, controller))
-            {
-                clipPlayer2.Stop();
-                Debug.Log("Vibration from clipPlayer2 on " + controllerName + " should stop.");
-            }
-
-            // Loop first clip using the B/Y-button
-            if (OVRInput.GetDown(OVRInput.Button.Two, controller))
-            {
-                clipPlayer1.isLooping = !clipPlayer1.isLooping;
-                Debug.Log(String.Format("Looping should be {0} on " + controllerName + ".", clipPlayer1.isLooping));
-            }
-
-            // Modulate the amplitude and frequency of the first clip using the thumbstick
-            // - Moving left/right modulates the frequency shift
-            // - Moving up/down modulates the amplitude
-            if (controller == OVRInput.Controller.LTouch)
-            {
-                clipPlayer1.amplitude = Mathf.Clamp(1.0f + OVRInput.Get(OVRInput.RawAxis2D.LThumbstick).y, 0.0f, 1.0f);
-                clipPlayer1.frequencyShift = OVRInput.Get(OVRInput.RawAxis2D.LThumbstick).x;
-            }
-            else if (controller == OVRInput.Controller.RTouch)
-            {
-                clipPlayer1.amplitude = Mathf.Clamp(1.0f + OVRInput.Get(OVRInput.RawAxis2D.RThumbstick).y, 0.0f, 1.0f);
-                clipPlayer1.frequencyShift = OVRInput.Get(OVRInput.RawAxis2D.RThumbstick).x;
-            }
-        }
-
-        // If any exceptions occur, we catch and log them here.
-        catch (Exception e)
-        {
-            Debug.LogError(e.Message);
+            case Controller.Right:
+                rightClipPlayer1.isLooping = !rightClipPlayer1.isLooping;
+                Debug.Log(String.Format("Looping should be {0} on " + hand + " controller.", rightClipPlayer1.isLooping));
+                break;
+            case Controller.Left:
+                leftClipPlayer1.isLooping = !leftClipPlayer1.isLooping;
+                Debug.Log(String.Format("Looping should be {0} on " + hand + " controller.", leftClipPlayer1.isLooping));
+                break;
+            default:
+                Debug.LogWarning("Input hand not mapped for: " + hand);
+                break;
         }
     }
 
-    // We poll for controller interactions on every frame using the Update() loop
-    protected virtual void Update()
+    /// <summary>
+    /// Modulates amplitude and frequency of first clip, the x axis manages the frequency, the y axis the amplitude.
+    /// </summary>
+    /// <param name="hand"></param>
+    /// <param name="input"></param>
+    public void ModulateAmplitudeAndFrequencyOfFirstClip(Controller hand, Vector2 input)
     {
-        HandleControllerInput(OVRInput.Controller.LTouch, _playerLeft1, _playerLeft2, Controller.Left);
-        HandleControllerInput(OVRInput.Controller.RTouch, _playerRight1, _playerRight2, Controller.Right);
+        switch (hand)
+        {
+            case Controller.Right:
+                rightClipPlayer1.amplitude = input.y;
+                rightClipPlayer1.frequencyShift = input.x;
+                break;
+            case Controller.Left:
+                leftClipPlayer1.amplitude = input.y;
+                leftClipPlayer1.frequencyShift = input.x;
+                break;
+            default:
+                Debug.LogWarning("Input hand not mapped for: " + hand);
+                break;
+        }
+    }
+
+    public void PlaySecondClip(Controller hand)
+    {
+        switch (hand)
+        {
+            case Controller.Right:
+                rightClipPlayer2.Play(Controller.Right);
+                break;
+            case Controller.Left:
+                leftClipPlayer2.Play(Controller.Left);
+                break;
+            default:
+                Debug.LogWarning("Input hand not mapped for: " + hand);
+                break;
+        }
+        Debug.Log("Should feel vibration from clipPlayer2 on " + hand + " controller.");
+    }
+
+    public void StopSecondClip(Controller hand)
+    {
+        switch (hand)
+        {
+            case Controller.Right:
+                rightClipPlayer2.Stop();
+                break;
+            case Controller.Left:
+                leftClipPlayer2.Stop();
+                break;
+            default:
+                Debug.LogWarning("Input hand not mapped for: " + hand);
+                break;
+        }
+        Debug.Log("Vibration from clipPlayer2 should stop on hand " + hand + ".");
     }
 
     protected virtual void OnDestroy()
     {
-        _playerLeft1?.Dispose();
-        _playerLeft2?.Dispose();
-        _playerRight1?.Dispose();
-        _playerRight2?.Dispose();
+        leftClipPlayer1?.Dispose();
+        leftClipPlayer2?.Dispose();
+        rightClipPlayer1?.Dispose();
+        rightClipPlayer2?.Dispose();
     }
 
     // Upon exiting the application (or when playmode is stopped) we release the haptic clip players and uninitialize (dispose) the SDK.
