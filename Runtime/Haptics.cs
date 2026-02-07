@@ -95,7 +95,7 @@ namespace Oculus.Haptics
         private static bool EnsureInitialized()
         {
             if (IsInitialized() ||
-                Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "64.0.0-mainline.0")))
+                Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "67.0.0-mainline.0")))
                 return true;
 
             Debug.LogError($"Error: {Ffi.error_message()}");
