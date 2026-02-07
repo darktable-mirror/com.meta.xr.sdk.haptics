@@ -102,7 +102,7 @@ namespace Oculus.Haptics
         /// passed to this method.
         ///
         /// <para>
-        /// For more information on playback behaviour see <see cref="HapticSource.Play()"/> and
+        /// For more information on playback behaviour see <see cref="Play()"/> and
         /// <see cref="HapticClipPlayer"/>.
         /// </para>
         /// </remarks>
@@ -196,8 +196,8 @@ namespace Oculus.Haptics
         /// </summary>
         ///
         /// <remarks>
-        /// The controller will only be applied the next time <see cref="PlayFromStart()"/>
-        /// is called. It can also be assigned as an argument to <see cref="PlayFromStart"/>
+        /// The controller will only be applied the next time <see cref="Play()"/>
+        /// is called. It can also be assigned as an argument to <see cref="Play(Controller)"/>
         /// if preferred.
         /// </remarks>
         public Controller controller

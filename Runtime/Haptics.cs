@@ -187,7 +187,7 @@ namespace Oculus.Haptics
                 return true;
             }
 
-            if (IsPcmHapticsExtensionEnabled() && Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "74.0.0-mainline.0")))
+            if (IsPcmHapticsExtensionEnabled() && Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "76.0.0-mainline.0")))
             {
                 Debug.Log("Initialized with OVRPlugin backend");
                 IsPCMHaptics = true;
