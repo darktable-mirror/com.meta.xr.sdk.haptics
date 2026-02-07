@@ -60,7 +60,8 @@ namespace Oculus
                 PlayerInvalidAmplitude = -11,
                 PlayerInvalidFrequencyShift = -12,
                 PlayerInvalidPriority = -13,
-                NoClipLoaded = -14
+                NoClipLoaded = -14,
+                InvalidPlayCallbackPointer = -15
             }
 
             public struct SdkVersion
@@ -95,6 +96,17 @@ namespace Oculus
             [DllImport(NativeLibName, EntryPoint = "haptics_sdk_initialize_logging")]
             public static extern Result initialize_logging(
                 [MarshalAs(UnmanagedType.FunctionPtr)] LogCallback? logCallback);
+
+#nullable disable
+
+            public delegate void HapticsSdkPlayCallback(IntPtr context, Controller controller, float duration, float amplitude);
+
+#nullable enable
+
+            [DllImport(NativeLibName, EntryPoint = "haptics_sdk_initialize_with_callback_backend")]
+            public static extern Result initialize_with_callback_backend(
+                IntPtr context,
+                [MarshalAs(UnmanagedType.FunctionPtr)] HapticsSdkPlayCallback? playCallback);
 
 #nullable disable
 

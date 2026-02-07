@@ -21,7 +21,12 @@
 // @lint-ignore-every LICENSELINT
 
 using System;
+using System.Threading;
 using UnityEngine;
+#if (UNITY_STANDALONE_WIN && USING_XR_SDK_OPENXR)
+using UnityEngine.XR;
+using UnityEngine.XR.OpenXR;
+#endif
 
 namespace Oculus.Haptics
 {
@@ -42,6 +47,15 @@ namespace Oculus.Haptics
     public class Haptics : IDisposable
     {
         protected static Haptics instance;
+
+        // A synchronization context is needed for the PlayCallback to call InputDevices.SendHapticImpulse(),
+        // as the PlayCallback function is being called from a thread that is not Unity's main
+        private static SynchronizationContext syncContext;
+
+        /// <summary>
+        /// Whether PCM haptics are available and enabled for the current runtime.
+        /// </summary>
+        public static bool IsPCMHaptics { get; private set; } = false;
 
         /// <summary>
         /// Returns the singleton instance of <c>Haptics</c>: either existing or new.
@@ -71,11 +85,58 @@ namespace Oculus.Haptics
 
         private static bool IsSupportedPlatform()
         {
-            // Standalone Quest builds and Link to Quest on Windows.
+            // Standalone Quest builds, Link to Quest and other PCVR devices on Windows.
 #if ((UNITY_ANDROID && !UNITY_EDITOR) || UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN)
-                                                return true;
+            return true;
 #else
             return false;
+#endif
+        }
+
+        private static bool IsPcmHapticsExtensionEnabled()
+        {
+#if (UNITY_STANDALONE_WIN && USING_XR_SDK_OPENXR)
+            foreach (string feature in OpenXRRuntime.GetEnabledExtensions())
+            {
+                if (feature.Equals("XR_FB_haptic_pcm"))
+                {
+                    return true;
+                }
+            }
+            return false;
+#else
+            return true;
+#endif
+        }
+
+        /// <summary>
+        /// A function that plays the given haptic sample through Unity's SendHapticImpulse() API.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// This is used as the play callback for the Native SDK on non Quest devices.
+        /// </remarks>
+        ///
+        /// <param name="context">Context pointer </param>
+        /// <param name="controller">Controller where the haptics should play </param>
+        /// <param name="duration">Duration of the vibration </param>
+        /// <param name="amplitude">Amplitude of the vibration </param>
+        [AOT.MonoPInvokeCallback(typeof(Ffi.HapticsSdkPlayCallback))]
+        private static void PlayCallback(IntPtr context, Ffi.Controller controller, float duration, float amplitude)
+        {
+#if (UNITY_STANDALONE_WIN && USING_XR_SDK_OPENXR)
+            syncContext.Post(_ =>
+            {
+                switch (controller)
+                {
+                    case Ffi.Controller.Left:
+                        InputDevices.GetDeviceAtXRNode(XRNode.LeftHand).SendHapticImpulse(0, amplitude, duration);
+                        break;
+                    case Ffi.Controller.Right:
+                        InputDevices.GetDeviceAtXRNode(XRNode.RightHand).SendHapticImpulse(0, amplitude, duration);
+                        break;
+                }
+            }, null);
 #endif
         }
 
@@ -94,9 +155,25 @@ namespace Oculus.Haptics
         /// <returns><c>true</c> if it was possible to ensure initialization; <c>false</c> otherwise.</returns>
         private static bool EnsureInitialized()
         {
-            if (IsInitialized() ||
-                            Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "68.0.0-mainline.0")))
+            if (IsInitialized())
+            {
                 return true;
+            }
+
+            if (IsPcmHapticsExtensionEnabled() && Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "69.0.0-mainline.0")))
+            {
+                Debug.Log("Initialized with OVRPlugin backend");
+                IsPCMHaptics = true;
+                return true;
+            }
+
+            // We are not using a Quest link runtime, so let's initialize simple haptics via the callback backend
+            if (Ffi.Succeeded(Ffi.initialize_with_callback_backend(IntPtr.Zero, PlayCallback)))
+            {
+                Debug.Log("Initialized with callback backend");
+                syncContext = SynchronizationContext.Current;
+                return true;
+            }
 
             Debug.LogError($"Error: {Ffi.error_message()}");
             return false;
@@ -146,7 +223,7 @@ namespace Oculus.Haptics
         /// also been destroyed.
         /// </remarks>
         ///
-        /// <param name="clipId"> The ID of the haptic clip to be released.</param>
+        /// <param name="clipId">The ID of the haptic clip to be released.</param>
         /// <returns><c>true</c> if the clip was released successfully; <c>false</c> if
         /// the clip was already released or the call was unsuccessful.</returns>
         public bool ReleaseClip(int clipId)
@@ -242,7 +319,7 @@ namespace Oculus.Haptics
         /// Returns the duration of the loaded haptic clip.
         /// </summary>
         ///
-        /// <param name="clipId"> The ID of the haptic clip to be queried for its duration.</param>
+        /// <param name="clipId">The ID of the haptic clip to be queried for its duration.</param>
         /// <returns>The duration of the haptic clip in seconds if the call was successful; 0.0 otherwise.</returns>
         /// <exception cref="ArgumentException">If the clip ID was invalid.</exception>
         public float GetClipDuration(int clipId)
