@@ -30,8 +30,8 @@ namespace Oculus.Haptics
     /// </summary>
     ///
     /// <remarks>
-    /// It only plays valid <c>HapticClip</c>s. A <c>HapticClip</c> can be played and
-    /// stopped multiple times until <c>Release()</c> is called.
+    /// It only plays valid <c>HapticClip</c>s. A <c>HapticClip</c> assigned to a
+    /// <c>HapticClipPlayer</c> can be played and stopped as often as required.
     /// </remarks>
     public class HapticClipPlayer : IDisposable
     {
@@ -41,7 +41,8 @@ namespace Oculus.Haptics
         private int _clipId = Ffi.InvalidId;
 
         /// <summary>
-        /// The internal ID of the <c>HapticClipPlayer</c>.
+        /// The internal ID of the <c>HapticClipPlayer</c>. As long as the player has an ID it is
+        /// in a valid state. It loses its ID if explicitly disposed.
         /// </summary>
         private int _playerId = Ffi.InvalidId;
 
@@ -236,30 +237,41 @@ namespace Oculus.Haptics
         }
 
         /// <summary>
-        /// Releases the clip and clip player from memory.
+        /// Call this method to explicitly/deterministically release a <c>HapticClipPlayer</c> object, otherwise
+        /// the garbage collector will release it. Of course, any calls to a disposed <c>HapticClipPlayer</c>
+        /// will result in runtime errors.
         /// </summary>
         ///
         /// <remarks>
-        /// A given <c>HapticClip</c> will not be freed until all <c>HapticClipPlayer</c>s that are
-        /// playing the clip have also been freed.
+        /// A given <c>HapticClip</c> will not be freed until all <c>HapticClipPlayer</c>s to which
+        /// it is assigned have also been freed.
         /// </remarks>
-        private void Release()
+        public void Dispose()
         {
-            if (!_haptics.ReleaseClip(_clipId) & _haptics.ReleaseHapticPlayer(_playerId))
-            {
-                Debug.LogError($"Error: HapticClipPlayer or HapticClip could not be released");
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
-        /// Call this method to release a <c>HapticClipPlayer</c> object. At the very least, the <c>MonoBehaviour</c>
-        /// containing the <c>HapticClipPlayer</c> object should do this in its <c>OnDestroy()</c> method.
-        /// It is also possible to release <c>HapticClipPlayer</c> objects as needed to free up memory.
-        /// Of course, any calls to a disposed <c>HapticClipPlayer</c> will result in runtime errors.
+        /// Releases the assigned clip and clip player from memory.
         /// </summary>
-        public void Dispose()
+        protected virtual void Dispose(bool disposing)
         {
-            Release();
+            if (_playerId != Ffi.InvalidId)
+            {
+                if (!_haptics.ReleaseClip(_clipId) & _haptics.ReleaseHapticPlayer(_playerId))
+                {
+                    Debug.LogError($"Error: HapticClipPlayer or HapticClip could not be released");
+                }
+
+                _clipId = Ffi.InvalidId;
+                _playerId = Ffi.InvalidId;
+            }
+        }
+
+        ~HapticClipPlayer()
+        {
+            Dispose(false);
         }
     }
 }

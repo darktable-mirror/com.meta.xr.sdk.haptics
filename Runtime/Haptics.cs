@@ -95,7 +95,7 @@ namespace Oculus.Haptics
         private static bool EnsureInitialized()
         {
             if (IsInitialized() ||
-                Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "62.0.0-mainline.0", null)))
+                Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "63.0.0-mainline.0", null)))
                 return true;
 
             Debug.LogError($"Error: {Ffi.error_message()}");
@@ -468,17 +468,43 @@ namespace Oculus.Haptics
         }
 
         /// <summary>
-        /// Call this to manually release the haptic runtime when your application is shutting down,
-        /// typically in <c>MonoBehaviour.OnApplicationQuit()</c>.
+        /// Call this to explicitly release the haptics runtime.
         /// </summary>
+        ///
+        /// <remarks>
+        /// This will also result in any <c>HapticClipPlayer</c>s and <c>HapticClip</c>s loaded into
+        /// the runtime getting released from memory. In general you shouldn't need to explicitly release
+        /// the haptics runtime as it is intended to run for the duration of your application and to get
+        /// released via <c>~Haptics</c> on shutdown. However if you do have a particular reason to release
+        /// it explicitly, creating a new <c>HapticClipPlayer</c> will produce a new one.
+        /// </remarks>
         public void Dispose()
         {
-            instance = null;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-            if (IsInitialized() && Ffi.Failed(Ffi.uninitialize()))
+        protected virtual void Dispose(bool disposing)
+        {
+            if (instance is not null)
             {
-                Debug.LogError($"Error: {Ffi.error_message()}");
+                if (IsInitialized() && Ffi.Failed(Ffi.uninitialize()))
+                {
+                    Debug.LogError($"Error: {Ffi.error_message()}");
+                }
+
+                instance = null;
             }
+        }
+
+        /// <summary>
+        /// <c>Haptics</c> should only be garbage collected during shutdown. Relying on the garbage collector
+        /// to destroy and instance of <c>Haptics</c> with the intention of creating a new one afterwards
+        /// is likely to produce undefined behaviour. For this, use the <c>Dispose()</c> method instead.
+        /// </summary>
+        ~Haptics()
+        {
+            Dispose(false);
         }
     }
 }
