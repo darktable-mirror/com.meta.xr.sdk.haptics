@@ -92,31 +92,32 @@ namespace Oculus
 
 #nullable enable
 
+            [DllImport(NativeLibName, EntryPoint = "haptics_sdk_initialize_logging")]
+            public static extern Result initialize_logging(
+                [MarshalAs(UnmanagedType.FunctionPtr)] LogCallback? logCallback);
+
+#nullable disable
+
             [DllImport(NativeLibName, EntryPoint = "haptics_sdk_initialize_with_ovr_plugin")]
             static extern Result initialize_with_ovr_plugin_bytes(
                 [In] byte[] game_engine_name,
                 [In] byte[] game_engine_version,
-                [In] byte[] game_engine_haptics_sdk_version,
-                [MarshalAs(UnmanagedType.FunctionPtr)] LogCallback? logCallback);
+                [In] byte[] game_engine_haptics_sdk_version);
 
             public static Result initialize_with_ovr_plugin(
                 string game_engine_name,
                 string game_engine_version,
-                string game_engine_haptics_sdk_version,
-                LogCallback? logCallback)
+                string game_engine_haptics_sdk_version)
             {
                 byte[] name = Encoding.UTF8.GetBytes(game_engine_name + '\0');
                 byte[] version = Encoding.UTF8.GetBytes(game_engine_version + '\0');
                 byte[] sdk_version = Encoding.UTF8.GetBytes(game_engine_haptics_sdk_version + '\0');
 
-                return initialize_with_ovr_plugin_bytes(name, version, sdk_version, logCallback);
+                return initialize_with_ovr_plugin_bytes(name, version, sdk_version);
             }
 
             [DllImport(NativeLibName, EntryPoint = "haptics_sdk_initialize_with_null_backend")]
-            public static extern Result initialize_with_null_backend(
-                [MarshalAs(UnmanagedType.FunctionPtr)] LogCallback? logCallback);
-
-#nullable disable
+            public static extern Result initialize_with_null_backend();
 
             [DllImport(NativeLibName, EntryPoint = "haptics_sdk_uninitialize")]
             public static extern Result uninitialize();
