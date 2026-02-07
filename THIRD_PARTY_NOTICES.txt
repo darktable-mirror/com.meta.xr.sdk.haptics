@@ -19,10 +19,8 @@ The following components are licensed under the Apache License 2.0 OR the MIT Li
 - crossbeam-channel, https://github.com/crossbeam-rs/crossbeam
 - crossbeam-utils, https://github.com/crossbeam-rs/crossbeam
 - dasp_sample, Copyright mitchmindtree <mitchell.nordine@gmail.com>, https://github.com/rustaudio/sample.git
-- downcast-rs, Copyright Ashish Myles <marcianx@gmail.com>|Runji Wang <wangrunji0408@163.com>, https://github.com/marcianx/downcast-rs
 - either, Copyright bluss, https://github.com/bluss/either
 - env_logger, https://github.com/env-logger-rs/env_logger/
-- fb_cloned, Copyright Facebook|Daniel Xu <dlxu@fb.com>, https://github.com/danobi/rust-shed
 - iana-time-zone, Copyright Andrew Straw <strawman@astraw.com>|René Kijewski <rene.kijewski@fu-berlin.de>|Ryan Lopopolo <rjl@hyperbo.la>, https://github.com/strawlab/iana-time-zone
 - itertools, Copyright bluss, https://github.com/rust-itertools/itertools
 - itoa, Copyright David Tolnay <dtolnay@gmail.com>, https://github.com/dtolnay/itoa
@@ -31,15 +29,11 @@ The following components are licensed under the Apache License 2.0 OR the MIT Li
 - libc, Copyright The Rust Project Developers, https://github.com/rust-lang/libc
 - lock_api, Copyright Amanieu d'Antras <amanieu@gmail.com>, https://github.com/Amanieu/parking_lot
 - log, Copyright The Rust Project Developers, https://github.com/rust-lang/log
-- log-panics, Copyright Steven Fackler <sfackler@gmail.com>, https://github.com/sfackler/rust-log-panics
-- ndk-context, Copyright The Rust Windowing contributors, https://github.com/rust-windowing/android-ndk-rs
 - num-complex, Copyright The Rust Project Developers, https://github.com/rust-num/num-complex
 - num-integer, Copyright The Rust Project Developers, https://github.com/rust-num/num-integer
 - num-traits, Copyright The Rust Project Developers, https://github.com/rust-num/num-traits
 - num_threads, Copyright Jacob Pratt <open-source@jhpratt.dev>, https://github.com/jhpratt/num_threads
 - once_cell, Copyright Aleksey Kladov <aleksey.kladov@gmail.com>, https://github.com/matklad/once_cell
-- openxr, Copyright Benjamin Saunders <ben.e.saunders@gmail.com>, https://github.com/Ralith/openxrs
-- openxr-sys, Copyright Benjamin Saunders <ben.e.saunders@gmail.com>, https://github.com/Ralith/openxrs
 - parking_lot, Copyright Amanieu d'Antras <amanieu@gmail.com>, https://github.com/Amanieu/parking_lot
 - parking_lot_core, Copyright Amanieu d'Antras <amanieu@gmail.com>, https://github.com/Amanieu/parking_lot
 - pest, Copyright Dragoș Tiselice <dragostiselice@gmail.com>, https://github.com/pest-parser/pest
@@ -72,7 +66,6 @@ The following components are licensed under the Apache License 2.0 OR the MIT Li
 - ucd-trie, Copyright Andrew Gallant <jamslam@gmail.com>, https://github.com/BurntSushi/ucd-generate
 - winapi, Copyright Peter Atashian <retep998@gmail.com>, https://github.com/retep998/winapi-rs
 - windows-sys, Copyright Microsoft, https://github.com/microsoft/windows-rs
-- windows-targets, Copyright Microsoft, https://github.com/microsoft/windows-rs
 - windows_x86_64_msvc, Copyright Microsoft, https://github.com/microsoft/windows-rs
 
 The following components are licensed under the ISC license reproduced below:

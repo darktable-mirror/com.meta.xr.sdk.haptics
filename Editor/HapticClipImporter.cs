@@ -52,8 +52,9 @@ namespace Oculus.Haptics.Editor
             var jsonString = File.ReadAllText(ctx.assetPath);
             var hapticClip = HapticClip.CreateInstance<HapticClip>();
             hapticClip.json = jsonString;
+            Texture2D icon = Resources.Load<Texture2D>("Icons/HapticIcon");
 
-            ctx.AddObjectToAsset("com.meta.xr.sdk.HapticClip", hapticClip);
+            ctx.AddObjectToAsset("com.meta.xr.sdk.HapticClip", hapticClip, icon);
             ctx.SetMainObject(hapticClip);
             OVRPlugin.SendUnifiedEvent(OVRPlugin.Bool.True, Haptics.HapticsSDKTelemetryName, "haptic_clip_imported", "");
         }
