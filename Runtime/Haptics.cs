@@ -187,7 +187,7 @@ namespace Oculus.Haptics
                 return true;
             }
 
-            if (IsPcmHapticsExtensionEnabled() && Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "71.0.0-mainline.0")))
+            if (IsPcmHapticsExtensionEnabled() && Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "74.0.0-mainline.0")))
             {
                 Debug.Log("Initialized with OVRPlugin backend");
                 IsPCMHaptics = true;
@@ -385,6 +385,31 @@ namespace Oculus.Haptics
         }
 
         /// <summary>
+        /// Seeks the current playback position.
+        /// </summary>
+        ///
+        /// <param name="playerId">The ID of the clip player to move the playback position on.</param>
+        /// <param name="time">The target playback position in seconds.</param>
+        /// <exception cref="ArgumentException">If the player ID was invalid.</exception>
+        /// <exception cref="InvalidOperationException">If the player has no clip loaded to seek.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the target playback position is out of range.
+        /// A valid playback position needs to be on a range of 0.0 to the currently loaded clip's duration in seconds.
+        /// To get the duration of the currently loaded clip, see <see cref="GetClipDuration"/>.</exception>
+        public void SeekPlaybackPositionHapticPlayer(int playerId, float time)
+        {
+            switch (Ffi.player_seek(playerId, time))
+            {
+                case Ffi.Result.PlayerIdInvalid:
+                    throw new ArgumentException($"Invalid player ID: {playerId}.");
+                case Ffi.Result.NoClipLoaded:
+                    throw new InvalidOperationException($"Player with ID {playerId} has no clip loaded.");
+                case Ffi.Result.PlayerInvalidSeekPosition:
+                    throw new ArgumentOutOfRangeException($"Invalid time: {time} for player {playerId}." +
+                                                          "Make sure the value is positive and within the playback duration of the currently loaded clip.");
+            };
+        }
+
+        /// <summary>
         /// Returns the duration of the loaded haptic clip.
         /// </summary>
         ///
@@ -446,7 +471,7 @@ namespace Oculus.Haptics
         /// All individual amplitudes within the clip are scaled by this value. Each individual value
         /// is clipped to one.</param>
         /// <exception cref="ArgumentException">If the player ID was invalid.</exception>
-        /// <exception cref="ArgumentException">If the amplitude argument is out of range (has to be non-negative).</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the amplitude argument is out of range (has to be non-negative).</exception>
         public void SetAmplitudeHapticPlayer(int playerId, float amplitude)
         {
             switch (Ffi.player_set_amplitude(playerId, amplitude))
@@ -488,7 +513,7 @@ namespace Oculus.Haptics
         /// <param name="playerId">ID of the clip player.</param>
         /// <param name="amount">A value between -1.0 and 1.0 (inclusive). Values outside this range will cause an exception.</param>
         /// <exception cref="ArgumentException">If the player ID was invalid.</exception>
-        /// <exception cref="ArgumentException">If the frequency shift amount is out of range.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the frequency shift amount is out of range.</exception>
         public void SetFrequencyShiftHapticPlayer(int playerId, float amount)
         {
             switch (Ffi.player_set_frequency_shift(playerId, amount))

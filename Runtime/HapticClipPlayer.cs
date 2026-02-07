@@ -39,28 +39,31 @@ namespace Oculus.Haptics
     /// A <c>HapticClipPlayer</c> can be in a stopped, playing, or paused state.
     /// <br />
     /// By default a <c>HapticClipPlayer</c> is in a stopped state. A player returns to the stopped state when the loaded clip reaches its end during playback,
-    /// or by explicitly calling <see cref="HapticClipPlayer.Stop()"/>.
+    /// or by explicitly calling <see cref="Stop()"/>.
     /// <br />
-    /// When calling <see cref="HapticClipPlayer.Play(Controller)"/> the player enters a playing state.
+    /// When calling <see cref="Play(Controller)"/> the player enters a playing state.
     /// <br />
-    /// A <c>HapticClipPlayer</c> in the playing state can enter a paused state by calling <see cref="HapticClipPlayer.Pause()"/>.
+    /// A <c>HapticClipPlayer</c> in the playing state can enter a paused state by calling <see cref="Pause()"/>.
     /// Playback can be unpaused (i.e. playing) from the current paused playback position by calling
-    /// <see cref="HapticClipPlayer.Play(Controller)"/> or <see cref="HapticClipPlayer.Resume()"/>.
+    /// <see cref="Play(Controller)"/> or <see cref="Resume()"/>.
     /// <br />
-    /// Calling <see cref="HapticClipPlayer.Resume()"/> on a playing player has no effect.
+    /// Calling <see cref="Resume()"/> on a playing player has no effect.
     /// <br />
-    /// Calling <see cref="HapticClipPlayer.Play(Controller)"/> on a playing player makes it play again from the start.
+    /// Calling <see cref="Play(Controller)"/> on a playing player makes it play again from the start.
+    /// <br />
+    /// Calling <see cref="Seek(float)"/> on a stopped player will move into a paused state. The playback location defaults to both controllers in this case,
+    /// making it possible to call <see cref="Resume()"/>. To deliberately start playback from the seeked playback location, use <see cref="Play(Controller)"/>.
     /// </para>
     ///
     /// <para>
-    /// The rendered amplitude and frequency can be modulated during runtime using the <see cref="HapticClipPlayer.amplitude"/>
-    /// and <see cref="HapticClipPlayer.frequencyShift"/> properties respectively.
+    /// The rendered amplitude and frequency can be modulated during runtime using the <see cref="amplitude"/>
+    /// and <see cref="frequencyShift"/> properties respectively.
     /// <br />
-    /// You can also loop a clip using the <see cref="HapticClipPlayer.isLooping"/> property.
+    /// You can also loop a clip using the <see cref="isLooping"/> property.
     /// </para>
     ///
     /// <para>
-    /// It is possible to release <c>HapticClipPlayer</c> objects as needed to free up memory using the <see cref="HapticClipPlayer.Dispose()"/> method.
+    /// It is possible to release <c>HapticClipPlayer</c> objects as needed to free up memory using the <see cref="Dispose()"/> method.
     /// Of course, calling any method on a released <c>HapticClipPlayer</c> will cause a runtime error.
     /// </para>
     /// </remarks>
@@ -152,14 +155,19 @@ namespace Oculus.Haptics
 
         /// <summary>
         /// Pauses playback on the <c>HapticClipPlayer</c>.
+        /// If a haptic clip is currently playing, it will be paused immediately and maintain it's current playback position.
+        /// You can call this method at any time to pause playback, regardless of whether a clip is currently playing or not.
         /// </summary>
         public void Pause()
         {
             _haptics.PauseHapticPlayer(_playerId);
         }
 
-        /// <summary>s
+        /// <summary>
         /// Resumes playback on the <c>HapticClipPlayer</c>.
+        /// If the playback of a haptic clip is currently paused, playback will be resumed immediately on the controller previously defined by <see cref="Play(Controller)"/>.
+        /// If the clip player is currently stopped or already playing, calling this method has no effect.
+        /// If playback was previously seeked on a stopped clip player, playback will resume on both controllers by default from the seeked playback position.
         /// </summary>
         public void Resume()
         {
@@ -171,10 +179,22 @@ namespace Oculus.Haptics
         /// If a haptic clip is currently playing, it will be stopped immediately.
         /// You can call this method at any time to stop playback, regardless of whether a clip is currently playing or not.
         /// </summary>
-        ///
         public void Stop()
         {
             _haptics.StopHapticPlayer(_playerId);
+        }
+
+        /// <summary>
+        /// Moves the current playback position of the <c>HapticClipPlayer</c> to the provided time in seconds.
+        /// If a haptic clip is currently playing, the playback position will jump to the provided time immediately.
+        /// If the player is currently paused or stopped, it will require a deliberate call to <see cref="Resume"/> or
+        /// <see cref="Play"/> to start playback from the seeked playback position.
+        /// </summary>
+        ///
+        /// <param name="time">The target time in seconds to move the current playback position to.</param>
+        public void Seek(float time)
+        {
+            _haptics.SeekPlaybackPositionHapticPlayer(_playerId, time);
         }
 
         /// <summary>

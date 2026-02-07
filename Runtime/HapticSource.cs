@@ -153,6 +153,19 @@ namespace Oculus.Haptics
         }
 
         /// <summary>
+        /// Seeks the current playback position of the <c>HapticSource</c>.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// See also: <see cref="HapticClipPlayer.Seek()"/>.<br />
+        /// For details on playback states and playback behaviour, see <see cref="HapticClipPlayer"/>.
+        /// </remarks>
+        public void Seek(float time)
+        {
+            _player.Seek(time);
+        }
+
+        /// <summary>
         /// Assigns a <c>HapticClip</c> to this <c>HapticSource</c>.
         /// </summary>
         ///

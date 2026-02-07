@@ -61,7 +61,8 @@ namespace Oculus
                 PlayerInvalidFrequencyShift = -12,
                 PlayerInvalidPriority = -13,
                 NoClipLoaded = -14,
-                InvalidPlayCallbackPointer = -15
+                InvalidPlayCallbackPointer = -15,
+                PlayerInvalidSeekPosition = -16
             }
 
             public struct SdkVersion
@@ -195,6 +196,9 @@ namespace Oculus
             [DllImport(NativeLibName, EntryPoint = "haptics_sdk_player_stop")]
             public static extern Result player_stop(int playerId);
 
+            [DllImport(NativeLibName, EntryPoint = "haptics_sdk_player_seek")]
+            public static extern Result player_seek(int playerId, float time);
+
             [DllImport(NativeLibName, EntryPoint = "haptics_sdk_player_set_amplitude")]
             public static extern Result player_set_amplitude(int playerId, float amplitude);
 
@@ -221,8 +225,8 @@ namespace Oculus
 
             public struct NullBackendStatistics
             {
+                public long stream_count;
                 public long play_call_count;
-                public long samples_played;
             }
 
             [DllImport(NativeLibName, EntryPoint = "haptics_sdk_get_null_backend_statistics")]
