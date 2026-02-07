@@ -31,8 +31,7 @@ namespace Oculus.Haptics
     ///
     /// <remarks>
     /// This class is provided where low-level control of the XR Haptics SDK runtime is required.
-    /// All applications should use its <c>Dispose</c> method to release the runtime in <c>OnApplicationQuit()</c>.
-    /// Otherwise, most applications probably do not require this class and <c>HapticClipPlayer</c>
+    /// Most applications probably do not require this class and <c>HapticClipPlayer</c>
     /// and <c>HapticClip</c> should be used instead.
     ///
     /// In a nutshell, it wraps the C# Native SDK bindings of the <c>Oculus.Haptics.Ffi</c> class
@@ -73,7 +72,7 @@ namespace Oculus.Haptics
         private static bool IsSupportedPlatform()
         {
             // Standalone Quest builds and Link to Quest on Windows.
-#if ((UNITY_ANDROID && !UNITY_EDITOR) || UNITY_EDITOR_WIN)
+#if ((UNITY_ANDROID && !UNITY_EDITOR) || UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN)
             return true;
 #else
             return false;
@@ -96,7 +95,7 @@ namespace Oculus.Haptics
         private static bool EnsureInitialized()
         {
             if (IsInitialized() ||
-                Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "60.0.0", null)))
+                Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "62.0.0-mainline.0", null)))
                 return true;
 
             Debug.LogError($"Error: {Ffi.error_message()}");

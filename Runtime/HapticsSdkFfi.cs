@@ -203,7 +203,6 @@ namespace Oculus
             public struct NullBackendStatistics
             {
                 public long play_call_count;
-                public long stop_call_count;
                 public long samples_played;
             }
 

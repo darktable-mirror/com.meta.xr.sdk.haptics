@@ -123,10 +123,10 @@ public class HapticsSdkPlaySample : MonoBehaviour
 
     protected virtual void OnDestroy()
     {
-        _playerLeft1.Dispose();
-        _playerLeft2.Dispose();
-        _playerRight1.Dispose();
-        _playerRight2.Dispose();
+        _playerLeft1?.Dispose();
+        _playerLeft2?.Dispose();
+        _playerRight1?.Dispose();
+        _playerRight2?.Dispose();
     }
 
     // Upon exiting the application (or when playmode is stopped) we release the haptic clip players and uninitialize (dispose) the SDK.
