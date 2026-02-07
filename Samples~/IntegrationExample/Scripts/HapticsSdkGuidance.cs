@@ -19,10 +19,10 @@ public class HapticsSdkGuidance : MonoBehaviour
             if (_popUpIndex == 0)
             {
                 popUpText.text =
-                    "Press and hold the Index Trigger on either"
-                    + "\n" + "controller to play the first haptic clip once.";
+                                "Press and hold the Index Trigger on either"
+                                + "\n" + "controller to play the first haptic clip once.";
                 if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch) ||
-                    OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
+                                OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
                 {
                     _popUpIndex++;
                 }
@@ -31,10 +31,10 @@ public class HapticsSdkGuidance : MonoBehaviour
             else if (_popUpIndex == 1)
             {
                 popUpText.text =
-                    "Press and hold the Grip Button on either"
-                    + "\n" + "controller to play the second haptic clip once.";
+                                "Press and hold the Grip Button on either"
+                                + "\n" + "controller to play the second haptic clip once.";
                 if (OVRInput.GetUp(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.LTouch) ||
-                    OVRInput.GetUp(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.RTouch))
+                                OVRInput.GetUp(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.RTouch))
                 {
                     _popUpIndex++;
                 }
@@ -43,10 +43,10 @@ public class HapticsSdkGuidance : MonoBehaviour
             else if (_popUpIndex == 2)
             {
                 popUpText.text =
-                    "Press B/Y-button to toggle looping on the first clip."
-                    + "\n" + "Press and hold Index Trigger to test.";
+                                "Press B/Y-button to toggle looping on the first clip."
+                                + "\n" + "Press and hold Index Trigger to test.";
                 if (OVRInput.GetUp(OVRInput.Button.Two, OVRInput.Controller.LTouch) ||
-                    OVRInput.GetUp(OVRInput.Button.Two, OVRInput.Controller.RTouch))
+                                OVRInput.GetUp(OVRInput.Button.Two, OVRInput.Controller.RTouch))
                 {
                     _popUpIndex++;
                 }
@@ -55,10 +55,10 @@ public class HapticsSdkGuidance : MonoBehaviour
             else if (_popUpIndex == 3)
             {
                 popUpText.text =
-                    "...while holding the Index Trigger, move the thumbstick"
-                    + "\n" + "to modulate the playback on that side.";
+                                "...while holding the Index Trigger, move the thumbstick"
+                                + "\n" + "to modulate the playback on that side.";
                 if (OVRInput.Get(OVRInput.RawAxis2D.LThumbstick).y != 0.0 ||
-                    OVRInput.Get(OVRInput.RawAxis2D.RThumbstick).y != 0.0)
+                                OVRInput.Get(OVRInput.RawAxis2D.RThumbstick).y != 0.0)
                 {
                     _popUpIndex++;
                 }
@@ -67,11 +67,11 @@ public class HapticsSdkGuidance : MonoBehaviour
             else if (_popUpIndex == 4)
             {
                 popUpText.text =
-                    "...while looping the first clip, playing back the"
-                    + "\n" + "higher priority second clip should"
-                    + "\n" + "interrupt the first clip's playback.";
+                                "...while looping the first clip, playing back the"
+                                + "\n" + "higher priority second clip should"
+                                + "\n" + "interrupt the first clip's playback.";
                 if (OVRInput.GetUp(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.LTouch) ||
-                    OVRInput.GetUp(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.RTouch))
+                                OVRInput.GetUp(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.RTouch))
                 {
                     _popUpIndex++;
                 }
@@ -80,7 +80,7 @@ public class HapticsSdkGuidance : MonoBehaviour
             else if (_popUpIndex == 5)
             {
                 popUpText.text =
-                    "That's all for this integration example!";
+                                "That's all for this integration example!";
             }
         }
 

@@ -73,7 +73,7 @@ namespace Oculus.Haptics
         {
             // Standalone Quest builds and Link to Quest on Windows.
 #if ((UNITY_ANDROID && !UNITY_EDITOR) || UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN)
-            return true;
+                                                return true;
 #else
             return false;
 #endif
@@ -95,7 +95,7 @@ namespace Oculus.Haptics
         private static bool EnsureInitialized()
         {
             if (IsInitialized() ||
-                Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "67.0.0-mainline.0")))
+                            Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "68.0.0-mainline.0")))
                 return true;
 
             Debug.LogError($"Error: {Ffi.error_message()}");
@@ -310,9 +310,9 @@ namespace Oculus.Haptics
 
                 case Ffi.Result.PlayerInvalidAmplitude:
                     throw new ArgumentOutOfRangeException(
-                        $"Invalid amplitude: {amplitude} for player {playerId}." +
-                        "Make sure the value is non-negative."
-                        );
+                                    $"Invalid amplitude: {amplitude} for player {playerId}." +
+                                    "Make sure the value is non-negative."
+                                    );
             }
         }
 
@@ -352,9 +352,9 @@ namespace Oculus.Haptics
 
                 case Ffi.Result.PlayerInvalidFrequencyShift:
                     throw new ArgumentOutOfRangeException(
-                        $"Invalid frequency shift amount: {amount} for player {playerId}." +
-                        "Make sure the value is on the range -1.0 to 1.0 (inclusive)."
-                        );
+                                    $"Invalid frequency shift amount: {amount} for player {playerId}." +
+                                    "Make sure the value is on the range -1.0 to 1.0 (inclusive)."
+                                    );
             }
         }
 
@@ -402,9 +402,9 @@ namespace Oculus.Haptics
             catch (OverflowException)
             {
                 throw new ArgumentOutOfRangeException(
-                    $"Invalid priority value: {input}. " +
-                    "Make sure the value is within the range 0 to 255 (inclusive)."
-                    );
+                                $"Invalid priority value: {input}. " +
+                                "Make sure the value is within the range 0 to 255 (inclusive)."
+                                );
             }
         }
 
@@ -428,9 +428,9 @@ namespace Oculus.Haptics
 
                 case Ffi.Result.PlayerInvalidPriority:
                     throw new ArgumentOutOfRangeException(
-                        $"Invalid priority value: {value} for player {playerId}. " +
-                        "Make sure the value is within the range 0 to 255 (inclusive)."
-                        );
+                                    $"Invalid priority value: {value} for player {playerId}. " +
+                                    "Make sure the value is within the range 0 to 255 (inclusive)."
+                                    );
             }
         }
 
