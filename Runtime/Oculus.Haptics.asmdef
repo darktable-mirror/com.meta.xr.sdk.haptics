@@ -2,7 +2,8 @@
     "name": "Oculus.Haptics",
     "rootNamespace": "Oculus.Haptics",
     "references": [
-        "Unity.XR.OpenXR"
+        "Unity.XR.OpenXR",
+        "Oculus.VR"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
