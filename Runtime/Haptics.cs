@@ -22,8 +22,6 @@
 
 using System;
 using System.Threading;
-using AOT;
-using UnityEditor;
 using UnityEngine;
 #if (UNITY_STANDALONE_WIN && USING_XR_SDK_OPENXR)
 using UnityEngine.XR;
@@ -32,26 +30,6 @@ using UnityEngine.XR.OpenXR;
 
 namespace Oculus.Haptics
 {
-
-#if UNITY_EDITOR
-    /// <summary>
-    /// Called once when editor opens to register use of the SDK.
-    /// </summary>
-    [InitializeOnLoad]
-    static class StartupTelemetry
-    {
-        static StartupTelemetry()
-        {
-            if (SessionState.GetBool("FirstInitDone", false))
-            {
-                return;
-            }
-
-            OVRPlugin.SendUnifiedEvent(OVRPlugin.Bool.True, Haptics.HapticsSDKTelemetryName, "haptics_sdk_in_project", "");
-            SessionState.SetBool("FirstInitDone", true);
-        }
-    }
-#endif
 
     /// <summary>
     /// Low-level API for the XR Haptics SDK runtime.
@@ -215,7 +193,7 @@ namespace Oculus.Haptics
                 return true;
             }
 
-            if (IsPcmHapticsExtensionEnabled() && Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "78.0.0-mainline.0")))
+            if (IsPcmHapticsExtensionEnabled() && Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "81")))
             {
                 Debug.Log("Initialized with OVRPlugin backend");
                 IsPCMHaptics = true;
