@@ -1,7 +1,7 @@
 {
   "name": "com.meta.xr.sdk.haptics",
   "displayName": "Meta XR Haptics SDK",
-  "version": "81.0.0",
+  "version": "81.0.1",
   "description": "SDK for playback of haptics created in Meta Haptics Studio on Quest devices",
   "samples": [
     {
@@ -32,7 +32,7 @@
     "SDK"
   ],
   "dependencies": {
-    "com.meta.xr.sdk.core": "81.0.0"
+    "com.meta.xr.sdk.core": "81.0.1"
   },
   "documentationUrl": "https://developer.oculus.com/documentation/unity/unity-haptics-sdk/",
   "changelogUrl": "https://developer.oculus.com/downloads/package/meta-haptics-sdk-unity/"
