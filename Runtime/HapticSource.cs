@@ -6,17 +6,21 @@ using UnityEngine;
 namespace Oculus.Haptics
 {
     /// <summary>
-    /// Provides playback functionality for a single haptic clip by wrapping <c>HapticClipPlayer</c>.
+    /// Provides playback functionality for a single haptic clip by wrapping <see cref="HapticClipPlayer"/>.
     /// </summary>
     ///
+    /// <remarks>
     /// If you don't need a MonoBehaviour and a C# class would be more suitable, use <c>HapticClipPlayer</c>
     /// instead. It has the same functionality.
+    /// <br />
     ///
-    /// Once you have assigned a <c>HapticClip</c> to the <see cref="clip"/> property you can play
+    /// Once you have assigned a <see cref="HapticClip"/> to the <see cref="clip"/> property you can play
     /// the <c>HapticSource</c>, enable or disable <c>loop</c>ing, and modulate the amplitude and frequency.
+    /// <br />
     ///
     /// You can place multiple <c>HapticSource</c> components in your scene, with a different
     /// <c>HapticClip</c> assigned to each.
+    /// </remarks>
     public class HapticSource : MonoBehaviour, ISerializationCallbackReceiver
     {
         // The <c>HapticClipPlayer</c> that <c>HapticSource</c> wraps.
@@ -71,11 +75,17 @@ namespace Oculus.Haptics
         /// </summary>
         ///
         /// <remarks>
-        /// All properties applied to this <c>HapticSource</c>
-        /// will be effective during playback. Although multiple <c>HapticSource</c>s can
-        /// play simultaneously, the output of only one will be felt at any given moment on
-        /// a given controller.
+        /// <para>
+        /// All properties applied to this <see cref="HapticSource"/> will be effective during playback.<br />
+        /// Although multiple <c>HapticSource</c>s can play simultaneously, the output of only one will be felt at any given moment on
+        /// a given controller.<br />
         /// See <see cref="HapticClipPlayer.priority"/> for a description of how this works.
+        /// </para>
+        ///
+        /// <para>
+        /// For further information on <c>Play()</c> see <see cref="HapticClipPlayer.Play(Controller)"/>.<br />
+        /// For more details on playback states and playback behaviour, see <see cref="HapticClipPlayer"/>.
+        /// </para>
         /// </remarks>
         public void Play()
         {
@@ -84,18 +94,17 @@ namespace Oculus.Haptics
 
         /// <summary>
         /// Starts playback of the <c>HapticClip</c> that has been assigned with the <c>clip</c>
-        /// property:
-        /// 1. From the start of the clip
-        /// 2. On the controller passed by argument
+        /// property on the controller passed by argument.
         /// </summary>
         ///
         /// <remarks>
         /// The controller assigned to this <c>HapticSource</c> will be reassigned to the one
-        /// passed to this method. All properties applied to this <c>HapticSource</c>
-        /// will be effective during playback. Although multiple <c>HapticSource</c>s can play
-        /// simultaneously, the output of only one will be felt at any given moment on a given
-        /// controller.
-        /// See <see cref="HapticClipPlayer.priority"/> for a description of how this works.
+        /// passed to this method.
+        ///
+        /// <para>
+        /// For more information on playback behaviour see <see cref="HapticSource.Play()"/> and
+        /// <see cref="HapticClipPlayer"/>.
+        /// </para>
         /// </remarks>
         /// <param name="controller">The physical controller to play haptics on.</param>
         public void Play(Controller controller)
@@ -105,8 +114,39 @@ namespace Oculus.Haptics
         }
 
         /// <summary>
+        /// Pause playback of the <c>HapticSource</c>.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// See also: <see cref="HapticClipPlayer.Pause()"/>.<br />
+        /// For details on playback states and playback behaviour, see <see cref="HapticClipPlayer"/>.
+        /// </remarks>
+        public void Pause()
+        {
+            _player.Pause();
+        }
+
+        /// <summary>
+        /// Resume playback of the <c>HapticSource</c>.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// See also: <see cref="HapticClipPlayer.Resume()"/>.<br />
+        /// For details on playback states and playback behaviour, see <see cref="HapticClipPlayer"/>.
+        /// </remarks>
+        public void Resume()
+        {
+            _player.Resume();
+        }
+
+        /// <summary>
         /// Stops playback of the <c>HapticSource</c>.
         /// </summary>
+        ///
+        /// <remarks>
+        /// See also: <see cref="HapticClipPlayer.Stop()"/>.<br />
+        /// For details on playback states and playback behaviour, see <see cref="HapticClipPlayer"/>.
+        /// </remarks>
         public void Stop()
         {
             _player.Stop();
@@ -117,7 +157,8 @@ namespace Oculus.Haptics
         /// </summary>
         ///
         /// <remarks>
-        /// See also: <see cref="PlayFromStart"/>.
+        /// See also: <see cref="HapticClipPlayer.Play(Controller)"/>.<br />
+        /// For details on playback states and playback behaviour, see <see cref="HapticClipPlayer"/>.
         /// </remarks>
         public HapticClip clip
         {

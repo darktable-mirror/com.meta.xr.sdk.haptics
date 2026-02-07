@@ -186,6 +186,12 @@ namespace Oculus
             [DllImport(NativeLibName, EntryPoint = "haptics_sdk_player_play")]
             public static extern Result player_play(int playerId, Controller controller);
 
+            [DllImport(NativeLibName, EntryPoint = "haptics_sdk_player_pause")]
+            public static extern Result player_pause(int playerId);
+
+            [DllImport(NativeLibName, EntryPoint = "haptics_sdk_player_resume")]
+            public static extern Result player_resume(int playerId);
+
             [DllImport(NativeLibName, EntryPoint = "haptics_sdk_player_stop")]
             public static extern Result player_stop(int playerId);
 

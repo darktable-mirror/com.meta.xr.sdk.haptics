@@ -331,6 +331,42 @@ namespace Oculus.Haptics
         }
 
         /// <summary>
+        /// Pauses playback on the player with the specified player ID.
+        /// </summary>
+        ///
+        /// <param name="playerId">The ID of the clip player to pause playback on.</param>
+        /// <exception cref="ArgumentException">If the player ID was invalid.</exception>
+        /// <exception cref="InvalidOperationException">If the player has no clip loaded.</exception>
+        public void PauseHapticPlayer(int playerId)
+        {
+            switch (Ffi.player_pause(playerId))
+            {
+                case Ffi.Result.PlayerIdInvalid:
+                    throw new ArgumentException($"Invalid player ID: {playerId}.");
+                case Ffi.Result.NoClipLoaded:
+                    throw new InvalidOperationException($"Player with ID {playerId} has no clip loaded.");
+            };
+        }
+
+        /// <summary>
+        /// Resumes playback on the player with the specified player ID.
+        /// </summary>
+        ///
+        /// <param name="playerId">The ID of the clip player to resume playback on.</param>
+        /// <exception cref="ArgumentException">If the player ID was invalid.</exception>
+        /// <exception cref="InvalidOperationException">If the player has no clip loaded.</exception>
+        public void ResumeHapticPlayer(int playerId)
+        {
+            switch (Ffi.player_resume(playerId))
+            {
+                case Ffi.Result.PlayerIdInvalid:
+                    throw new ArgumentException($"Invalid player ID: {playerId}.");
+                case Ffi.Result.NoClipLoaded:
+                    throw new InvalidOperationException($"Player with ID {playerId} has no clip loaded.");
+            };
+        }
+
+        /// <summary>
         /// Stops playback that was previously started with <c>PlayHapticPlayer()</c>.
         /// </summary>
         ///

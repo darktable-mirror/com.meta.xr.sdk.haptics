@@ -30,17 +30,43 @@ namespace Oculus.Haptics
     /// </summary>
     ///
     /// <remarks>
+    /// <para>
     /// A <c>HapticClipPlayer</c> only plays valid <c>HapticClip</c>s. You can start and
     /// stop a <c>HapticClip</c> assigned to a <c>HapticClipPlayer</c> as often as required.
+    /// </para>
+    ///
+    /// <para>
+    /// A <c>HapticClipPlayer</c> can be in a stopped, playing, or paused state.
+    /// <br />
+    /// By default a <c>HapticClipPlayer</c> is in a stopped state. A player returns to the stopped state when the loaded clip reaches its end during playback,
+    /// or by explicitly calling <see cref="HapticClipPlayer.Stop()"/>.
+    /// <br />
+    /// When calling <see cref="HapticClipPlayer.Play(Controller)"/> the player enters a playing state.
+    /// <br />
+    /// A <c>HapticClipPlayer</c> in the playing state can enter a paused state by calling <see cref="HapticClipPlayer.Pause()"/>.
+    /// Playback can be unpaused (i.e. playing) from the current paused playback position by calling
+    /// <see cref="HapticClipPlayer.Play(Controller)"/> or <see cref="HapticClipPlayer.Resume()"/>.
+    /// <br />
+    /// Calling <see cref="HapticClipPlayer.Resume()"/> on a playing player has no effect.
+    /// <br />
+    /// Calling <see cref="HapticClipPlayer.Play(Controller)"/> on a playing player makes it play again from the start.
+    /// </para>
+    ///
+    /// <para>
     /// The rendered amplitude and frequency can be modulated during runtime using the <see cref="HapticClipPlayer.amplitude"/>
     /// and <see cref="HapticClipPlayer.frequencyShift"/> properties respectively.
+    /// <br />
     /// You can also loop a clip using the <see cref="HapticClipPlayer.isLooping"/> property.
-    /// It is possible to release <c>HapticClipPlayer</c> objects as needed to free up memory using the <c>Dispose()</c> method.
+    /// </para>
+    ///
+    /// <para>
+    /// It is possible to release <c>HapticClipPlayer</c> objects as needed to free up memory using the <see cref="HapticClipPlayer.Dispose()"/> method.
     /// Of course, calling any method on a released <c>HapticClipPlayer</c> will cause a runtime error.
+    /// </para>
     /// </remarks>
     public class HapticClipPlayer : IDisposable
     {
-        /// The internal ID of the <c>HapticClip</c> associated with the <c>HapticClipPlayer</c>. This ID is used internally to identify the
+        /// The internal ID of the <see cref="HapticClip"/> associated with the <c>HapticClipPlayer</c>. This ID is used internally to identify the
         /// clip.
         ///
         /// The <c>_clipID</c> is set when creating a new <c>HapticClipPlayer</c> instance with a <c>HapticClip</c>, typically through
@@ -52,14 +78,14 @@ namespace Oculus.Haptics
         private int _playerId = Ffi.InvalidId;
 
         /// <summary>
-        /// The implementation of <c>Haptics</c> for <c>HapticClipPlayer</c> to use. This field is protected to allow derived
+        /// The implementation of <see cref="Haptics"/> for <c>HapticClipPlayer</c> to use. This field is protected to allow derived
         /// classes to provide a custom implementation.
         /// The <c>HapticClipPlayer</c> uses this instance to play haptic clips and access haptic-related functionality.
         /// </summary>
         protected Haptics _haptics;
 
         /// <summary>
-        /// Creates a <c>HapticClipPlayer</c> with no <c>HapticClip</c> assigned to it.
+        /// Creates a <c>HapticClipPlayer</c> with no <see cref="HapticClip"/> assigned to it.
         /// </summary>
         ///
         /// <remarks>
@@ -81,7 +107,7 @@ namespace Oculus.Haptics
         }
 
         /// <summary>
-        /// Creates a <c>HapticClipPlayer</c> and assigns the given <c>HapticClip</c> to it. You can use
+        /// Creates a <c>HapticClipPlayer</c> and assigns the given <see cref="HapticClip"/> to it. You can use
         /// this player to play, stop, and generally control the haptic clip's playback properties.
         /// </summary>
         ///
@@ -104,7 +130,7 @@ namespace Oculus.Haptics
         }
 
         /// <summary>
-        /// Sets the <c>Haptics</c> implementation that <c>HapticClipPlayer</c> will call
+        /// Sets the <see cref="Haptics"/> implementation that <c>HapticClipPlayer</c> will call
         /// into for all haptics operations.
         /// See also: <see cref="Haptics.Instance"/> for more information on <c>Haptics</c>.
         /// </summary>
@@ -125,7 +151,23 @@ namespace Oculus.Haptics
         }
 
         /// <summary>
-        /// Stops playback of the HapticClipPlayer.
+        /// Pauses playback on the <c>HapticClipPlayer</c>.
+        /// </summary>
+        public void Pause()
+        {
+            _haptics.PauseHapticPlayer(_playerId);
+        }
+
+        /// <summary>s
+        /// Resumes playback on the <c>HapticClipPlayer</c>.
+        /// </summary>
+        public void Resume()
+        {
+            _haptics.ResumeHapticPlayer(_playerId);
+        }
+
+        /// <summary>
+        /// Stops playback of the <c>HapticClipPlayer</c>.
         /// If a haptic clip is currently playing, it will be stopped immediately.
         /// You can call this method at any time to stop playback, regardless of whether a clip is currently playing or not.
         /// </summary>
