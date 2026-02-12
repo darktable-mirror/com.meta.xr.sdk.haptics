@@ -1,36 +1,43 @@
 THE FOLLOWING SETS FORTH ATTRIBUTION NOTICES FOR THIRD PARTY SOFTWARE THAT MAY BE CONTAINED IN
 PORTIONS OF THE META XR HAPTICS SDK.
 
-The following component is licensed under the Apache License 2.0 reproduced below:
-- hound, Copyright Ruud van Asseldonk <dev@veniogames.com>, https://github.com/ruuda/hound
-
 The following component is licensed under the Apache License 2.0 OR the Boost Software License 1.0 reproduced below:
 - ryu, Copyright David Tolnay <dtolnay@gmail.com>, https://github.com/dtolnay/ryu
 
 The following components are licensed under the Apache License 2.0 OR the MIT License reproduced below:
+- android-tzdata, Copyright RumovZ, https://github.com/RumovZ/android-tzdata
 - android_log-sys, Copyright Nerijus Arlauskas <nercury@gmail.com>, https://github.com/nercury/android_log-sys-rs
 - android_logger, Copyright The android_logger Developers, https://github.com/Nercury/android_logger-rs
 - android_system_properties, Copyright Nicolas Silva <nical@fastmail.com>, https://github.com/nical/android_system_properties
 - bitflags, Copyright The Rust Project Developers, https://github.com/bitflags/bitflags
 - cesu8, Copyright Eric Kidd <git@randomhacks.net>, https://github.com/emk/cesu8-rs
-- cfg-if, Copyright Alex Crichton <alex@alexcrichton.com>, https://github.com/alexcrichton/cfg-if
+- cfg-if, Copyright Alex Crichton <alex@alexcrichton.com>, https://github.com/rust-lang/cfg-if
 - chrono, https://github.com/chronotope/chrono
 - core-foundation-sys, Copyright The Servo Project Developers, https://github.com/servo/core-foundation-rs
 - crossbeam-channel, https://github.com/crossbeam-rs/crossbeam
 - crossbeam-utils, https://github.com/crossbeam-rs/crossbeam
 - dasp_sample, Copyright mitchmindtree <mitchell.nordine@gmail.com>, https://github.com/rustaudio/sample.git
-- either, Copyright bluss, https://github.com/bluss/either
-- env_logger, https://github.com/env-logger-rs/env_logger/
-- iana-time-zone, Copyright Andrew Straw <strawman@astraw.com>|René Kijewski <rene.kijewski@fu-berlin.de>|Ryan Lopopolo <rjl@hyperbo.la>, https://github.com/strawlab/iana-time-zone
+- deranged, Copyright Jacob Pratt <jacob@jhpratt.dev>, https://github.com/jhpratt/deranged
+- either, Copyright bluss, https://github.com/rayon-rs/either
+- env_logger, Copyright The Rust Project Developers, https://github.com/env-logger-rs/env_logger/
+- futures, Copyright Alex Crichton <alex@alexcrichton.com>, https://github.com/rust-lang-nursery/futures-rs
+- futures-channel, https://github.com/rust-lang/futures-rs
+- futures-core, https://github.com/rust-lang/futures-rs
+- futures-io, https://github.com/rust-lang/futures-rs
+- futures-macro, https://github.com/rust-lang/futures-rs
+- futures-sink, https://github.com/rust-lang/futures-rs
+- futures-task, https://github.com/rust-lang/futures-rs
+- futures-util, https://github.com/rust-lang/futures-rs
+- iana-time-zone, Copyright Andrew Straw <strawman@astraw.com>, René Kijewski <rene.kijewski@fu-berlin.de>, Ryan Lopopolo <rjl@hyperbo.la>, https://github.com/strawlab/iana-time-zone
 - itertools, Copyright bluss, https://github.com/rust-itertools/itertools
 - itoa, Copyright David Tolnay <dtolnay@gmail.com>, https://github.com/dtolnay/itoa
 - jni, Copyright Josh Chase <josh@prevoty.com>, https://github.com/jni-rs/jni-rs
 - jni-sys, Copyright Steven Fackler <sfackler@gmail.com>, https://github.com/sfackler/rust-jni-sys
 - libc, Copyright The Rust Project Developers, https://github.com/rust-lang/libc
+- libm, Copyright Jorge Aparicio <jorge@japaric.io>, https://github.com/rust-lang/libm
 - lock_api, Copyright Amanieu d'Antras <amanieu@gmail.com>, https://github.com/Amanieu/parking_lot
 - log, Copyright The Rust Project Developers, https://github.com/rust-lang/log
-- num-complex, Copyright The Rust Project Developers, https://github.com/rust-num/num-complex
-- num-integer, Copyright The Rust Project Developers, https://github.com/rust-num/num-integer
+- num-conv, Copyright Jacob Pratt <jacob@jhpratt.dev>, https://github.com/jhpratt/num-conv
 - num-traits, Copyright The Rust Project Developers, https://github.com/rust-num/num-traits
 - num_threads, Copyright Jacob Pratt <open-source@jhpratt.dev>, https://github.com/jhpratt/num_threads
 - once_cell, Copyright Aleksey Kladov <aleksey.kladov@gmail.com>, https://github.com/matklad/once_cell
@@ -38,49 +45,61 @@ The following components are licensed under the Apache License 2.0 OR the MIT Li
 - parking_lot_core, Copyright Amanieu d'Antras <amanieu@gmail.com>, https://github.com/Amanieu/parking_lot
 - pest, Copyright Dragoș Tiselice <dragostiselice@gmail.com>, https://github.com/pest-parser/pest
 - pest_derive, Copyright Dragoș Tiselice <dragostiselice@gmail.com>, https://github.com/pest-parser/pest
-- pest_generator, Copyright Dragoș Tiselice <dragostiselice@gmail.com>, https://github.com/pest-parser/pest
-- pest_meta, Copyright Dragoș Tiselice <dragostiselice@gmail.com>, https://github.com/pest-parser/pest
-- primal-check, Copyright Huon Wilson <dbau.pp@gmail.com>, https://github.com/huonw/primal
-- proc-macro2, Copyright David Tolnay <dtolnay@gmail.com>|Alex Crichton <alex@alexcrichton.com>, https://github.com/dtolnay/proc-macro2
-- quote, Copyright David Tolnay <dtolnay@gmail.com>, https://github.com/dtolnay/quote
-- regex, Copyright The Rust Project Developers, https://github.com/rust-lang/regex
-- regex-syntax, Copyright The Rust Project Developers, https://github.com/rust-lang/regex
-- rustfft, Copyright Allen Welkie <allen.welkie at gmail>|Elliott Mahler <join.together at gmail>, https://github.com/ejmahler/RustFFT
+- pin-project-lite, https://github.com/taiki-e/pin-project-lite
+- pin-utils, Copyright Josef Brandl <mail@josefbrandl.de>, https://github.com/rust-lang-nursery/pin-utils
+- portable-atomic, https://github.com/taiki-e/portable-atomic
+- powerfmt, Copyright Jacob Pratt <jacob@jhpratt.dev>, https://github.com/jhpratt/powerfmt
+- regex, Copyright The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>, https://github.com/rust-lang/regex
+- regex-automata, Copyright The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>, https://github.com/rust-lang/regex/tree/master/regex-automata
+- regex-syntax, Copyright The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>, https://github.com/rust-lang/regex/tree/master/regex-syntax
 - rustversion, Copyright David Tolnay <dtolnay@gmail.com>, https://github.com/dtolnay/rustversion
 - scopeguard, Copyright bluss, https://github.com/bluss/scopeguard
-- serde, Copyright Erick Tryzelaar <erick.tryzelaar@gmail.com>|David Tolnay <dtolnay@gmail.com>, https://github.com/serde-rs/serde
-- serde_derive, Copyright Erick Tryzelaar <erick.tryzelaar@gmail.com>|David Tolnay <dtolnay@gmail.com>, https://github.com/serde-rs/serde
-- serde_json, Copyright Erick Tryzelaar <erick.tryzelaar@gmail.com>|David Tolnay <dtolnay@gmail.com>, https://github.com/serde-rs/json
+- serde, Copyright Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>, https://github.com/serde-rs/serde
+- serde_core, Copyright Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>, https://github.com/serde-rs/serde
+- serde_derive, Copyright Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>, https://github.com/serde-rs/serde
+- serde_json, Copyright Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>, https://github.com/serde-rs/json
+- signal-hook-registry, Copyright Michal 'vorner' Vaner <vorner@vorner.cz>, Masaki Hara <ackie.h.gmai@gmail.com>, https://github.com/vorner/signal-hook
 - simplelog, Copyright Drakulix <github@drakulix.de>, https://github.com/drakulix/simplelog.rs
 - smallvec, Copyright The Servo Project Developers, https://github.com/servo/rust-smallvec
-- strength_reduce, Copyright Elliott Mahler <join.together@gmail.com>, http://github.com/ejmahler/strength_reduce
-- syn, Copyright David Tolnay <dtolnay@gmail.com>, https://github.com/dtolnay/syn
+- socket2, Copyright Alex Crichton <alex@alexcrichton.com>, Thomas de Zeeuw <thomasdezeeuw@gmail.com>, https://github.com/rust-lang/socket2
 - thiserror, Copyright David Tolnay <dtolnay@gmail.com>, https://github.com/dtolnay/thiserror
 - thiserror-impl, Copyright David Tolnay <dtolnay@gmail.com>, https://github.com/dtolnay/thiserror
-- time, Copyright Jacob Pratt <open-source@jhpratt.dev>|Time contributors, https://github.com/time-rs/time
-- time-core, Copyright Jacob Pratt <open-source@jhpratt.dev>|Time contributors, https://github.com/time-rs/time
-- time-macros, Copyright Jacob Pratt <open-source@jhpratt.dev>|Time contributors, https://github.com/time-rs/time
-- transpose, Copyright Elliott Mahler <join.together@gmail.com>, http://github.com/ejmahler/transpose
+- time, Copyright Jacob Pratt <open-source@jhpratt.dev>, Time contributors, https://github.com/time-rs/time
+- time-core, Copyright Jacob Pratt <open-source@jhpratt.dev>, Time contributors, https://github.com/time-rs/time
+- time-macros, Copyright Jacob Pratt <open-source@jhpratt.dev>, Time contributors, https://github.com/time-rs/time
 - typeshare, https://github.com/1Password/typeshare
 - typeshare-annotation, https://github.com/1Password/typeshare
 - ucd-trie, Copyright Andrew Gallant <jamslam@gmail.com>, https://github.com/BurntSushi/ucd-generate
+- unty, Copyright Victor Koenders <bincode@trang.ar>, https://github.com/bincode-org/unty
+- value-bag, Copyright Ashley Mannix <ashleymannix@live.com.au>, https://github.com/sval-rs/value-bag
 - winapi, Copyright Peter Atashian <retep998@gmail.com>, https://github.com/retep998/winapi-rs
-- windows-sys, Copyright Microsoft, https://github.com/microsoft/windows-rs
-- windows_x86_64_msvc, Copyright Microsoft, https://github.com/microsoft/windows-rs
+- windows-link, Copyright Microsoft, https://github.com/microsoft/windows-rs
+- windows-targets, Copyright Microsoft, https://github.com/microsoft/windows-rs
 
-The following components are licensed under the ISC license reproduced below:
+The following components are licensed under the ISC License reproduced below:
 - json5, Copyright Callum Oakley <hello@callumoakley.net>, https://github.com/callum-oakley/json5-rs
 - libloading, Copyright Simonas Kazlauskas <libloading@kazlauskas.me>, https://github.com/nagisa/rust_libloading/
 
-The following components are licensed under the MIT license reproduced below:
-- bytes, Copyright Carl Lerche <me@carllerche.com>|Sean McArthur <sean@seanmonstar.com>, https://github.com/tokio-rs/bytes
+The following components are licensed under the MIT License reproduced below:
+- bincode, Copyright Ty Overby <ty@pre-alpha.com>, Zoey Riordan <zoey@dos.cafe>, Victor Koenders <bincode@trangar.com>, https://github.com/bincode-org/bincode
+- bincode_derive, Copyright Zoey Riordan <zoey@dos.cafe>, Victor Koenders <bincode@trangar.com>, https://github.com/bincode-org/bincode
+- bytes, Copyright Carl Lerche <me@carllerche.com>, Sean McArthur <sean@seanmonstar.com>, https://github.com/tokio-rs/bytes
 - combine, Copyright Markus Westerlind <marwes91@gmail.com>, https://github.com/Marwes/combine
-- realfft, Copyright HEnquist <henrik.enquist@gmail.com>, https://github.com/HEnquist/realfft
-- thread-priority, Copyright Victor Polevoy <fx@thefx.co>, https://github.com/vityafx/thread-priority
+- mio, Copyright Carl Lerche <me@carllerche.com>, Thomas de Zeeuw <thomasdezeeuw@gmail.com>, Tokio Contributors <team@tokio.rs>, https://github.com/tokio-rs/mio
+- slab, Copyright Carl Lerche <me@carllerche.com>, https://github.com/tokio-rs/slab
+- thread-priority, Copyright Victor Polevoy <fx@thefx.co>, https://github.com/iddm/thread-priority
+- tokio, Copyright Tokio Contributors <team@tokio.rs>, https://github.com/tokio-rs/tokio
+- tokio-macros, Copyright Tokio Contributors <team@tokio.rs>, https://github.com/tokio-rs/tokio
+- tokio-util, Copyright Tokio Contributors <team@tokio.rs>, https://github.com/tokio-rs/tokio
+- tracing, Copyright Eliza Weisman <eliza@buoyant.io>, Tokio Contributors <team@tokio.rs>, https://github.com/tokio-rs/tracing
+- tracing-attributes, Copyright Tokio Contributors <team@tokio.rs>, Eliza Weisman <eliza@buoyant.io>, David Barsky <dbarsky@amazon.com>, https://github.com/tokio-rs/tracing
+- tracing-core, Copyright Tokio Contributors <team@tokio.rs>, https://github.com/tokio-rs/tracing
+- valuable, https://github.com/tokio-rs/valuable
+- valuable-derive, https://github.com/tokio-rs/valuable
 
-The following components are licensed under the MIT license OR the Unlicense reproduced below:
+The following components are licensed under the MIT License OR the Unlicense reproduced below:
 - aho-corasick, Copyright Andrew Gallant <jamslam@gmail.com>, https://github.com/BurntSushi/aho-corasick
-- memchr, Copyright Andrew Gallant <jamslam@gmail.com>|bluss, https://github.com/BurntSushi/memchr
+- memchr, Copyright Andrew Gallant <jamslam@gmail.com>, bluss, https://github.com/BurntSushi/memchr
 - termcolor, Copyright Andrew Gallant <jamslam@gmail.com>, https://github.com/BurntSushi/termcolor
 - winapi-util, Copyright Andrew Gallant <jamslam@gmail.com>, https://github.com/BurntSushi/winapi-util
 

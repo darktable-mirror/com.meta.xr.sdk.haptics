@@ -23,7 +23,7 @@
 using System;
 using System.Threading;
 using UnityEngine;
-#if (UNITY_STANDALONE_WIN && USING_XR_SDK_OPENXR)
+#if (USING_XR_SDK_OPENXR)
 using UnityEngine.XR;
 using UnityEngine.XR.OpenXR;
 #endif
@@ -57,16 +57,6 @@ namespace Oculus.Haptics
         // A synchronization context is needed for the PlayCallback to call InputDevices.SendHapticImpulse(),
         // as the PlayCallback function is being called from a thread that is not Unity's main
         private static SynchronizationContext syncContext;
-
-        /// <summary>
-        /// Whether PCM haptics are available and enabled for the current runtime.
-        /// </summary>
-        ///
-        /// <remarks>
-        /// PCM haptics allow for high-quality haptic feedback. This property indicates whether PCM haptics
-        /// are supported by the current runtime and whether they are enabled.
-        /// </remarks>
-        public static bool IsPCMHaptics { get; private set; } = false;
 
         /// <summary>
         /// Returns the singleton instance of <c>Haptics</c>: either existing or new.
@@ -116,19 +106,40 @@ namespace Oculus.Haptics
         }
 
         /// <summary>
-        /// Checks if the PCM haptics extension is enabled on the current platform.
-        /// This method is specific to OpenXR on Windows and returns true if the XR_FB_haptic_pcm extension is enabled.
-        /// On other platforms, it always returns true.
+        /// Checks if the PCM haptics extension is enabled for the current runtime.
         /// </summary>
         ///
-        ///<returns><c>true</c> if the PCM haptics extension is enabled, <c>false</c> otherwise</returns>
+        ///<returns><c>true</c> if the XR_FB_haptic_pcm extension is enabled, <c>false</c> otherwise.</returns>
         private static bool IsPcmHapticsExtensionEnabled()
         {
-#if (UNITY_STANDALONE_WIN && USING_XR_SDK_OPENXR)
+#if (USING_XR_SDK_OPENXR)
             foreach (string feature in OpenXRRuntime.GetEnabledExtensions())
             {
                 if (feature.Equals("XR_FB_haptic_pcm"))
                 {
+                    Debug.Log("The PCM Haptics extension is enabled");
+                    return true;
+                }
+            }
+            return false;
+#else
+            return true;
+#endif
+        }
+
+        /// <summary>
+        /// Checks if the parametric haptics extension is enabled for the current runtime.
+        /// </summary>
+        ///
+        ///<returns><c>true</c> if the XR_EXTX1_haptic_parametric extension is enabled, <c>false</c> otherwise.</returns>
+        private static bool IsParametricHapticsExtensionEnabled()
+        {
+#if (USING_XR_SDK_OPENXR)
+            foreach (string feature in OpenXRRuntime.GetEnabledExtensions())
+            {
+                if (feature.Equals("XR_EXTX1_haptic_parametric"))
+                {
+                    Debug.Log("The Parametric Haptics extension is enabled");
                     return true;
                 }
             }
@@ -154,7 +165,7 @@ namespace Oculus.Haptics
         [AOT.MonoPInvokeCallback(typeof(Ffi.HapticsSdkPlayCallback))]
         private static void PlayCallback(IntPtr context, Ffi.Controller controller, float duration, float amplitude)
         {
-#if (UNITY_STANDALONE_WIN && USING_XR_SDK_OPENXR)
+#if (USING_XR_SDK_OPENXR)
             syncContext.Post(_ =>
             {
                 switch (controller)
@@ -193,14 +204,18 @@ namespace Oculus.Haptics
                 return true;
             }
 
-            if (IsPcmHapticsExtensionEnabled() && Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "83")))
+            if (IsPcmHapticsExtensionEnabled() || IsParametricHapticsExtensionEnabled())
             {
-                Debug.Log("Initialized with OVRPlugin backend");
-                IsPCMHaptics = true;
-                return true;
+                if (Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "85")))
+                {
+                    Debug.Log("Initialized with OVRPlugin backend");
+                    return true;
+                }
+                return false;
             }
 
-            // We are not using a Quest link runtime, so let's initialize simple haptics via the callback backend
+            // Neither PCM, nor the parametric haptics extension are enabled; or initialization with the OVR Plugin backend failed:
+            // Falling back to simple haptics (i.e. the callback backend).
             if (Ffi.Succeeded(Ffi.initialize_with_callback_backend(IntPtr.Zero, PlayCallback)))
             {
                 Debug.Log("Initialized with callback backend");
