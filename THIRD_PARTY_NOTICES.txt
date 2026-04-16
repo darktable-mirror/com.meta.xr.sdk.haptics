@@ -5,7 +5,7 @@ The following component is licensed under the Apache License 2.0 OR the Boost So
 - ryu, Copyright David Tolnay <dtolnay@gmail.com>, https://github.com/dtolnay/ryu
 
 The following components are licensed under the Apache License 2.0 OR the MIT License reproduced below:
-- android-tzdata, Copyright RumovZ, https://github.com/RumovZ/android-tzdata
+- allocator-api2, Copyright Zakarum <zaq.dev@icloud.com>, https://github.com/zakarumych/allocator-api2
 - android_log-sys, Copyright Nerijus Arlauskas <nercury@gmail.com>, https://github.com/nercury/android_log-sys-rs
 - android_logger, Copyright The android_logger Developers, https://github.com/Nercury/android_logger-rs
 - android_system_properties, Copyright Nicolas Silva <nical@fastmail.com>, https://github.com/nical/android_system_properties
@@ -20,6 +20,7 @@ The following components are licensed under the Apache License 2.0 OR the MIT Li
 - deranged, Copyright Jacob Pratt <jacob@jhpratt.dev>, https://github.com/jhpratt/deranged
 - either, Copyright bluss, https://github.com/rayon-rs/either
 - env_logger, Copyright The Rust Project Developers, https://github.com/env-logger-rs/env_logger/
+- equivalent, https://github.com/cuviper/equivalent
 - futures, Copyright Alex Crichton <alex@alexcrichton.com>, https://github.com/rust-lang-nursery/futures-rs
 - futures-channel, https://github.com/rust-lang/futures-rs
 - futures-core, https://github.com/rust-lang/futures-rs
@@ -28,13 +29,13 @@ The following components are licensed under the Apache License 2.0 OR the MIT Li
 - futures-sink, https://github.com/rust-lang/futures-rs
 - futures-task, https://github.com/rust-lang/futures-rs
 - futures-util, https://github.com/rust-lang/futures-rs
+- hashbrown, Copyright Amanieu d'Antras <amanieu@gmail.com>, https://github.com/rust-lang/hashbrown
 - iana-time-zone, Copyright Andrew Straw <strawman@astraw.com>, René Kijewski <rene.kijewski@fu-berlin.de>, Ryan Lopopolo <rjl@hyperbo.la>, https://github.com/strawlab/iana-time-zone
 - itertools, Copyright bluss, https://github.com/rust-itertools/itertools
 - itoa, Copyright David Tolnay <dtolnay@gmail.com>, https://github.com/dtolnay/itoa
 - jni, Copyright Josh Chase <josh@prevoty.com>, https://github.com/jni-rs/jni-rs
 - jni-sys, Copyright Steven Fackler <sfackler@gmail.com>, https://github.com/sfackler/rust-jni-sys
 - libc, Copyright The Rust Project Developers, https://github.com/rust-lang/libc
-- libm, Copyright Jorge Aparicio <jorge@japaric.io>, https://github.com/rust-lang/libm
 - lock_api, Copyright Amanieu d'Antras <amanieu@gmail.com>, https://github.com/Amanieu/parking_lot
 - log, Copyright The Rust Project Developers, https://github.com/rust-lang/log
 - num-conv, Copyright Jacob Pratt <jacob@jhpratt.dev>, https://github.com/jhpratt/num-conv
@@ -50,8 +51,8 @@ The following components are licensed under the Apache License 2.0 OR the MIT Li
 - portable-atomic, https://github.com/taiki-e/portable-atomic
 - powerfmt, Copyright Jacob Pratt <jacob@jhpratt.dev>, https://github.com/jhpratt/powerfmt
 - regex, Copyright The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>, https://github.com/rust-lang/regex
-- regex-automata, Copyright The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>, https://github.com/rust-lang/regex/tree/master/regex-automata
-- regex-syntax, Copyright The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>, https://github.com/rust-lang/regex/tree/master/regex-syntax
+- regex-automata, Copyright The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>, https://github.com/rust-lang/regex
+- regex-syntax, Copyright The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>, https://github.com/rust-lang/regex
 - rustversion, Copyright David Tolnay <dtolnay@gmail.com>, https://github.com/dtolnay/rustversion
 - scopeguard, Copyright bluss, https://github.com/bluss/scopeguard
 - serde, Copyright Erick Tryzelaar <erick.tryzelaar@gmail.com>, David Tolnay <dtolnay@gmail.com>, https://github.com/serde-rs/serde
@@ -73,8 +74,7 @@ The following components are licensed under the Apache License 2.0 OR the MIT Li
 - unty, Copyright Victor Koenders <bincode@trang.ar>, https://github.com/bincode-org/unty
 - value-bag, Copyright Ashley Mannix <ashleymannix@live.com.au>, https://github.com/sval-rs/value-bag
 - winapi, Copyright Peter Atashian <retep998@gmail.com>, https://github.com/retep998/winapi-rs
-- windows-link, Copyright Microsoft, https://github.com/microsoft/windows-rs
-- windows-targets, Copyright Microsoft, https://github.com/microsoft/windows-rs
+- windows-link, https://github.com/microsoft/windows-rs
 
 The following components are licensed under the ISC License reproduced below:
 - json5, Copyright Callum Oakley <hello@callumoakley.net>, https://github.com/callum-oakley/json5-rs
@@ -85,6 +85,7 @@ The following components are licensed under the MIT License reproduced below:
 - bincode_derive, Copyright Zoey Riordan <zoey@dos.cafe>, Victor Koenders <bincode@trangar.com>, https://github.com/bincode-org/bincode
 - bytes, Copyright Carl Lerche <me@carllerche.com>, Sean McArthur <sean@seanmonstar.com>, https://github.com/tokio-rs/bytes
 - combine, Copyright Markus Westerlind <marwes91@gmail.com>, https://github.com/Marwes/combine
+- libm, Copyright Jorge Aparicio <jorge@japaric.io>, https://github.com/rust-lang/compiler-builtins
 - mio, Copyright Carl Lerche <me@carllerche.com>, Thomas de Zeeuw <thomasdezeeuw@gmail.com>, Tokio Contributors <team@tokio.rs>, https://github.com/tokio-rs/mio
 - slab, Copyright Carl Lerche <me@carllerche.com>, https://github.com/tokio-rs/slab
 - thread-priority, Copyright Victor Polevoy <fx@thefx.co>, https://github.com/iddm/thread-priority
@@ -102,6 +103,9 @@ The following components are licensed under the MIT License OR the Unlicense rep
 - memchr, Copyright Andrew Gallant <jamslam@gmail.com>, bluss, https://github.com/BurntSushi/memchr
 - termcolor, Copyright Andrew Gallant <jamslam@gmail.com>, https://github.com/BurntSushi/termcolor
 - winapi-util, Copyright Andrew Gallant <jamslam@gmail.com>, https://github.com/BurntSushi/winapi-util
+
+The following component is licensed under the zlib License reproduced below:
+- foldhash, Copyright Orson Peters <orsonpeters@gmail.com>, https://github.com/orlp/foldhash
 
 ------- Apache License 2.0 -------
 
@@ -393,3 +397,23 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <http://unlicense.org/>
+
+------- zlib License -------
+
+Copyright (c) <year> <copyright holders>
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any damages
+arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute it
+freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must not
+   claim that you wrote the original software. If you use this software
+   in a product, an acknowledgment in the product documentation would be
+   appreciated but is not required.
+2. Altered source versions must be plainly marked as such, and must not be
+   misrepresented as being the original software.
+3. This notice may not be removed or altered from any source distribution.
