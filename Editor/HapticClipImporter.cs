@@ -56,7 +56,12 @@ namespace Oculus.Haptics.Editor
 
             ctx.AddObjectToAsset("com.meta.xr.sdk.HapticClip", hapticClip, icon);
             ctx.SetMainObject(hapticClip);
-            OVRPlugin.SendUnifiedEvent(OVRPlugin.Bool.True, OVRPlugin.ProductType.HapticsSdk, "haptic_clip_imported", "");
+            var unifiedEvent = new Meta.XR.Telemetry.UnifiedEventData("haptic_clip_imported")
+            {
+                isEssential = true,
+                productType = Meta.XR.Telemetry.TelemetryProductType.HapticsSdk
+            };
+            unifiedEvent.Send();
         }
     }
 }

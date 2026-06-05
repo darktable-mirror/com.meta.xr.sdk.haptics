@@ -67,7 +67,12 @@ namespace Oculus.Haptics
         void Awake()
         {
             _player = new HapticClipPlayer();
-            _player.clip = _clip;
+
+            if (_clip != null)
+            {
+                _player.clip = _clip;
+            }
+
             SyncSerializedFieldsToPlayer();
         }
 

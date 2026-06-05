@@ -354,16 +354,18 @@ namespace Oculus.Haptics
         /// </summary>
         protected virtual void Dispose(bool disposing)
         {
-            if (_playerId != Ffi.InvalidId)
+            if (_clipId != Ffi.InvalidId && !_haptics.ReleaseClip(_clipId))
             {
-                if (!_haptics.ReleaseClip(_clipId) & _haptics.ReleaseHapticPlayer(_playerId))
-                {
-                    Debug.LogError($"Error: HapticClipPlayer or HapticClip could not be released");
-                }
-
-                _clipId = Ffi.InvalidId;
-                _playerId = Ffi.InvalidId;
+                Debug.LogError($"Error: HapticClip could not be released");
             }
+
+            if (_playerId != Ffi.InvalidId && !_haptics.ReleaseHapticPlayer(_playerId))
+            {
+                Debug.LogError($"Error: HapticClipPlayer could not be released");
+            }
+
+            _clipId = Ffi.InvalidId;
+            _playerId = Ffi.InvalidId;
         }
 
         ~HapticClipPlayer()
