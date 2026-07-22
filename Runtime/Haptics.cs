@@ -206,7 +206,7 @@ namespace Oculus.Haptics
 
             if (IsPcmHapticsExtensionEnabled() || IsParametricHapticsExtensionEnabled())
             {
-                if (Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "203")))
+                if (Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "205")))
                 {
                     Debug.Log("Initialized with OVRPlugin backend");
                     return true;

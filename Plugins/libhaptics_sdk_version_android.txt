@@ -1,1 +1,1 @@
-Haptics Native SDK 202.0.0 (f78e5673defa+), built on 2026-02-03T14:20:52Z for Android
+Haptics Native SDK 205.0.0 (1049b116bd9b), built on 2026-06-01T04:55:17Z for Android
