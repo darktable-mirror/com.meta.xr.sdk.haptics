@@ -131,13 +131,13 @@ namespace Oculus.Haptics
         /// Checks if the parametric haptics extension is enabled for the current runtime.
         /// </summary>
         ///
-        ///<returns><c>true</c> if the XR_EXTX1_haptic_parametric extension is enabled, <c>false</c> otherwise.</returns>
+        ///<returns><c>true</c> if the XR_EXT_haptic_parametric extension is enabled, <c>false</c> otherwise.</returns>
         private static bool IsParametricHapticsExtensionEnabled()
         {
 #if (USING_XR_SDK_OPENXR)
             foreach (string feature in OpenXRRuntime.GetEnabledExtensions())
             {
-                if (feature.Equals("XR_EXTX1_haptic_parametric"))
+                if (feature.Equals("XR_EXT_haptic_parametric"))
                 {
                     Debug.Log("The Parametric Haptics extension is enabled");
                     return true;
@@ -206,7 +206,7 @@ namespace Oculus.Haptics
 
             if (IsPcmHapticsExtensionEnabled() || IsParametricHapticsExtensionEnabled())
             {
-                if (Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "205")))
+                if (Ffi.Succeeded(Ffi.initialize_with_ovr_plugin("Unity", Application.unityVersion, "207")))
                 {
                     Debug.Log("Initialized with OVRPlugin backend");
                     return true;

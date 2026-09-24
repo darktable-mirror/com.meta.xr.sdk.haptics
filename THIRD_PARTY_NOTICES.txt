@@ -15,9 +15,10 @@ The following components are licensed under the Apache License 2.0 OR the MIT Li
 - crossbeam-utils, https://github.com/crossbeam-rs/crossbeam
 - dasp_sample, Copyright mitchmindtree <mitchell.nordine@gmail.com>, https://github.com/rustaudio/sample.git
 - deranged, Copyright Jacob Pratt <jacob@jhpratt.dev>, https://github.com/jhpratt/deranged
-- either, Copyright bluss, https://github.com/rayon-rs/either
+- either, https://github.com/rayon-rs/either
 - env_logger, https://github.com/rust-cli/env_logger
 - equivalent, https://github.com/indexmap-rs/equivalent
+- errno, Copyright Chris Wong <lambda.fairy@gmail.com>, Dan Gohman <dev@sunfishcode.online>, https://github.com/lambda-fairy/rust-errno
 - futures, Copyright Alex Crichton <alex@alexcrichton.com>, https://github.com/rust-lang-nursery/futures-rs
 - futures-channel, https://github.com/rust-lang/futures-rs
 - futures-core, https://github.com/rust-lang/futures-rs
